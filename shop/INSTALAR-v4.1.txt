@@ -1,0 +1,11 @@
+INSTALACION AREA UNO v4.1
+
+1. Descomprimir el ZIP de actualización.
+2. Subir su contenido a la raíz del repositorio GitHub.
+3. Reemplazar los archivos existentes.
+4. No modificar ni eliminar productos.txt.
+5. Commit sugerido:
+   Corregir extracción de precios por producto v4.1
+6. Esperar que Vercel indique Ready.
+7. Abrir la página con Ctrl + F5.
+8. Verificar que el pie muestre v4.1.

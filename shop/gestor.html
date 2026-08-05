@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Gestor de enlaces | Área Uno</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.1">
+  <style>
+    .manager-page{min-height:100vh;background:#f2f4f7;padding:54px 18px}.manager-shell{width:min(920px,100%);margin:auto}.manager-top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}.manager-back{color:#142333;text-decoration:none;font-weight:800}.manager-card{background:#fff;border:1px solid #dde2e8;border-radius:28px;padding:clamp(24px,5vw,50px);box-shadow:0 22px 60px rgba(20,35,51,.09)}.manager-card h1{font-size:clamp(34px,6vw,62px);line-height:.95;margin:0 0 18px}.manager-lead{font-size:17px;line-height:1.65;color:#5b6673;max-width:720px}.manager-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:30px 0}.manager-step{border:1px solid #e2e6eb;border-radius:18px;padding:18px}.manager-step b{display:block;color:#1f66e5;font-size:12px;margin-bottom:8px}.manager-step span{font-size:13px;line-height:1.45}.manager-label{display:block;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin:24px 0 10px}.manager-textarea{width:100%;min-height:300px;resize:vertical;border:1px solid #ccd3dc;border-radius:18px;padding:18px;font:14px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}.manager-textarea:focus{border-color:#1f66e5;box-shadow:0 0 0 4px rgba(31,102,229,.1)}.manager-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.manager-note{margin-top:20px;padding:16px;border-radius:16px;background:#f6f8fb;color:#5b6673;font-size:13px;line-height:1.55}.manager-count{margin-top:10px;color:#1f66e5;font-weight:800}@media(max-width:700px){.manager-steps{grid-template-columns:1fr}.manager-top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="manager-page">
+    <div class="manager-shell">
+      <div class="manager-top">
+        <a class="brand" href="index.html"><span class="brand-symbol" aria-hidden="true"><i></i><b>1</b></span><span class="brand-copy"><strong>ÁREA UNO</strong><small>RECOMIENDA</small></span></a>
+        <a class="manager-back" href="index.html">← Volver al catálogo</a>
+      </div>
+
+      <section class="manager-card">
+        <p class="kicker dark"><span></span> GESTOR SIMPLE</p>
+        <h1>Solo pegá los links.</h1>
+        <p class="manager-lead">Pegá los enlaces de afiliado de Mercado Libre, uno debajo del otro. El gestor generará el archivo <strong>productos.txt</strong> listo para reemplazar en GitHub.</p>
+
+        <div class="manager-steps">
+          <div class="manager-step"><b>01</b><span>Pegá un enlace por línea.</span></div>
+          <div class="manager-step"><b>02</b><span>Descargá <code>productos.txt</code>.</span></div>
+          <div class="manager-step"><b>03</b><span>Reemplazalo en GitHub y confirmá el cambio.</span></div>
+        </div>
+
+        <label class="manager-label" for="linksInput">Enlaces de productos</label>
+        <textarea class="manager-textarea" id="linksInput" spellcheck="false" placeholder="https://meli.la/XXXXXXXX&#10;https://meli.la/YYYYYYYY&#10;https://www.mercadolibre.com.ar/.../"></textarea>
+        <p class="manager-count" id="linkCount">0 enlaces válidos</p>
+
+        <div class="manager-actions">
+          <button class="button button-primary" id="downloadButton" type="button">Descargar productos.txt <span>↓</span></button>
+          <button class="button button-dark" id="cleanButton" type="button">Limpiar duplicados</button>
+        </div>
+
+        <div class="manager-note"><strong>Importante:</strong> la web intentará obtener automáticamente título, imagen y precio público. Solo mostrará una promoción cuando Mercado Libre la exponga claramente en los datos accesibles del enlace; nunca calculará ni inventará descuentos.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const input = document.querySelector('#linksInput');
+    const count = document.querySelector('#linkCount');
+    const download = document.querySelector('#downloadButton');
+    const clean = document.querySelector('#cleanButton');
+
+    function getLinks() {
+      const found = input.value.match(/https?:\/\/[^\s|]+/gi) || [];
+      return [...new Set(found.map(value => value.trim()))];
+    }
+
+    function refreshCount() {
+      const links = getLinks();
+      count.textContent = `${links.length} ${links.length === 1 ? 'enlace válido' : 'enlaces válidos'}`;
+      return links;
+    }
+
+    input.addEventListener('input', refreshCount);
+    clean.addEventListener('click', () => {
+      input.value = refreshCount().join('\n');
+      refreshCount();
+    });
+    download.addEventListener('click', () => {
+      const links = refreshCount();
+      if (!links.length) {
+        input.focus();
+        return;
+      }
+      const content = `# Área Uno Recomienda — un enlace de afiliado por línea\n${links.join('\n')}\n`;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'productos.txt';
+      anchor.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
