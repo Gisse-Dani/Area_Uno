@@ -3,10 +3,10 @@ AREA UNO v4.1 - VERIFICACION DESPUES DEL DEPLOY
 1) Confirmar que el pie del sitio muestre v4.1.
 
 2) Grifo (debe devolver price 18929 y originalPrice null):
-/shop/api/product?url=https%3A%2F%2Fmeli.la%2F25e2WvA&debug=1
+https://aera-uno-shop.vercel.app/api/product?url=https%3A%2F%2Fmeli.la%2F25e2WvA&debug=1
 
 3) Lavarropas (debe devolver price 764999 y originalPrice 999999):
-/shop/api/product?url=https%3A%2F%2Fmeli.la%2F1YgkLpM&debug=1
+https://aera-uno-shop.vercel.app/api/product?url=https%3A%2F%2Fmeli.la%2F1YgkLpM&debug=1
 
 4) En debug.productScope debe aparecer:
 scoped: true

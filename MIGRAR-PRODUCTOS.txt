@@ -1,0 +1,17 @@
+MIGRACIÓN DEL CATÁLOGO DEL SHOP
+
+El catálogo integrado se lee desde:
+
+shop/productos.txt
+
+Si tu antiguo proyecto aera-uno-shop tenía más productos, copiá el contenido de su archivo:
+
+productos.txt
+
+y pegalo en el nuevo repositorio dentro de:
+
+shop/productos.txt
+
+Formato: un enlace de Mercado Libre por línea.
+
+No reemplaces shop/productos.txt al aplicar el paquete "solo corrección".

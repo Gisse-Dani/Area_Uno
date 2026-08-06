@@ -1,4 +1,4 @@
-const BUILD_VERSION = "5.1.0";
+const BUILD_VERSION = "5.1.1-integrated";
 
 const state = {
   products: [],
@@ -48,7 +48,7 @@ function extractUrl(line = "") {
 }
 
 async function getLinks() {
-  const response = await fetch(`productos.txt?v=${Date.now()}`, { cache: "no-store" });
+  const response = await fetch(`/shop/productos.txt?v=${Date.now()}`, { cache: "no-store" });
   if (!response.ok) throw new Error("No se pudo leer productos.txt");
   const text = await response.text();
   const seen = new Set();

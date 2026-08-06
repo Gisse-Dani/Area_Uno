@@ -1,39 +1,37 @@
-# Área 1 Integrado v3.0
+# Área 1 Integrado v3.1 — Shop original restaurado
 
-Sitio institucional integrado de **Área 1**, con sus tres unidades dentro del mismo proyecto:
+Este proyecto integra las tres unidades de Área 1 en un único despliegue de Vercel:
 
-- **Área 1 Shop**: catálogo y curaduría de productos dentro de `/shop`.
-- **Área 1 Eventos**: invitaciones digitales y micrositios para celebraciones.
-- **Área 1 Data**: servicios profesionales de datos, procesos, tableros e informes.
+- `/` — página central
+- `/shop` — Shop original v5.1, conservando su diseño
+- `/eventos` — Área 1 Eventos
+- `/datos` — Área 1 Data
+- `/shop/gestor` — gestor interno del catálogo
 
-## Estructura principal
+## Corrección aplicada
 
-- `index.html`: página central de la marca.
-- `eventos.html`: presentación de Área 1 Eventos.
-- `datos.html`: presentación de Área 1 Data.
-- `shop/index.html`: landing del Shop integrada dentro del mismo sitio.
-- `shop/gestor.html`: gestor interno del catálogo.
-- `shop/productos.txt`: listado editable de links de productos.
-- `api/product.js`: función serverless para leer datos públicos de Mercado Libre.
-- `assets/`: estilos, scripts e imágenes de la marca y Eventos.
-- `shop/assets/`: estilos, scripts e imágenes propios del Shop.
+El Shop integrado anteriormente utilizaba rutas relativas. Al abrirse como `/shop` sin barra final, el navegador buscaba sus recursos en `/assets` y su archivo de productos en `/productos.txt`. Eso provocaba dos fallas:
 
-## Publicación en Vercel
+1. Se cargaban estilos de la página central y el diseño parecía diferente.
+2. No se encontraba `shop/productos.txt`, por lo que el catálogo quedaba vacío.
 
-Configuración recomendada:
+La versión v3.1 restaura el Shop v5.1 original y utiliza rutas absolutas:
+
+- `/shop/assets/css/styles.css`
+- `/shop/assets/js/app.js`
+- `/shop/productos.txt`
+- `/api/product`
+
+## Publicación
 
 - Framework Preset: `Other`
 - Root Directory: `./`
 - Build Command: vacío
 - Output Directory: vacío
+- Production Branch: `main`
 
-## Qué quedó integrado
+## Productos
 
-- El **Shop ya no depende de un sitio separado**.
-- La navegación principal de Inicio, Eventos y Data ahora enlaza al Shop interno.
-- El Shop incluye enlaces de regreso al ecosistema Área 1.
-- La función `api/product.js` quedó disponible a nivel raíz para que `/shop` funcione correctamente en Vercel.
+El catálogo se administra en `shop/productos.txt`, con un enlace de Mercado Libre por línea.
 
-## Próximo paso sugerido
-
-Definir los canales finales de contacto (WhatsApp, email o formulario) para reemplazar los CTA comerciales de Eventos y Data, y cargar los enlaces reales en `shop/productos.txt`.
+Al aplicar el paquete de corrección, **no reemplazar `shop/productos.txt`** si el repositorio ya contiene la lista real de productos.

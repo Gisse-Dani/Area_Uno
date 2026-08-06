@@ -1,7 +1,3 @@
-## Nota de integración
-
-Este Shop ahora forma parte del sitio principal de Área 1 y se publica dentro de la ruta `/shop`.
-
 # Área Uno Shop v5.1
 
 Sitio de recomendaciones de productos publicado en Vercel.
