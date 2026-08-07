@@ -1,37 +1,30 @@
-# Área 1 Integrado v3.1 — Shop original restaurado
+# Área 1 Integrado v4.0
 
-Este proyecto integra las tres unidades de Área 1 en un único despliegue de Vercel:
+Sitio institucional integrado de **Área 1**, ahora con cuatro unidades dentro del mismo proyecto:
 
-- `/` — página central
-- `/shop` — Shop original v5.1, conservando su diseño
-- `/eventos` — Área 1 Eventos
-- `/datos` — Área 1 Data
-- `/shop/gestor` — gestor interno del catálogo
+- **Área 1 Shop**: catálogo y curaduría de productos dentro de `/shop`.
+- **Área 1 Eventos**: invitaciones digitales y micrositios para celebraciones.
+- **Área 1 Data**: servicios profesionales de datos, procesos, tableros e informes.
+- **Área 1 Equipamiento**: equipamiento tecnológico presupuestable para proyectos, con servidores, storage, redes, wireless, UPS y puesto de trabajo.
 
-## Corrección aplicada
+## Archivos principales
 
-El Shop integrado anteriormente utilizaba rutas relativas. Al abrirse como `/shop` sin barra final, el navegador buscaba sus recursos en `/assets` y su archivo de productos en `/productos.txt`. Eso provocaba dos fallas:
+- `index.html`: página central de la marca.
+- `eventos.html`: Área 1 Eventos.
+- `datos.html`: Área 1 Data.
+- `equipamiento.html`: Área 1 Equipamiento.
+- `shop/index.html`: Shop integrado.
+- `shop/productos.txt`: listado de links del Shop.
+- `api/product.js`: función serverless del Shop.
+- `assets/img/equipment/`: imágenes de apoyo derivadas del catálogo aportado para Equipamiento.
 
-1. Se cargaban estilos de la página central y el diseño parecía diferente.
-2. No se encontraba `shop/productos.txt`, por lo que el catálogo quedaba vacío.
-
-La versión v3.1 restaura el Shop v5.1 original y utiliza rutas absolutas:
-
-- `/shop/assets/css/styles.css`
-- `/shop/assets/js/app.js`
-- `/shop/productos.txt`
-- `/api/product`
-
-## Publicación
+## Publicación en Vercel
 
 - Framework Preset: `Other`
 - Root Directory: `./`
 - Build Command: vacío
 - Output Directory: vacío
-- Production Branch: `main`
 
-## Productos
+## Nota sobre Equipamiento
 
-El catálogo se administra en `shop/productos.txt`, con un enlace de Mercado Libre por línea.
-
-Al aplicar el paquete de corrección, **no reemplazar `shop/productos.txt`** si el repositorio ya contiene la lista real de productos.
+Las familias, modelos y marcas se presentan como referencias presupuestables basadas en el catálogo suministrado. Disponibilidad, configuración final, precio y plazo deben confirmarse en cada cotización.

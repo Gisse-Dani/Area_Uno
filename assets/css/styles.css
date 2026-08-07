@@ -309,3 +309,136 @@ h3 { font-size: 1.28rem; line-height: 1.24; letter-spacing: -.02em; }
   .package.featured { transform:none; }
   .footer-grid { grid-template-columns:1fr; }.footer-note { flex-direction:column; }
 }
+
+/* Equipamiento */
+.equipment-page { background:#f6f9fc; }
+.equipment-hero {
+  position:relative;
+  overflow:hidden;
+  color:#fff;
+  background:
+    radial-gradient(circle at 78% 30%, rgba(24,156,255,.24), transparent 33%),
+    linear-gradient(135deg,#040d1c 0%,#08244b 56%,#07192f 100%);
+}
+.equipment-hero::after {
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:-2px;height:150px;
+  background:url('../img/brand/waves.png') center bottom/cover no-repeat;
+  opacity:.56;
+  pointer-events:none;
+}
+.equipment-hero-grid {
+  position:relative;z-index:2;
+  min-height:690px;
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  gap:58px;
+  align-items:center;
+  padding:78px 0 130px;
+}
+.equipment-hero-copy strong { color:var(--blue-300); }
+.equipment-hero-visual {
+  position:relative;
+  min-height:520px;
+  border-radius:30px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 34px 70px rgba(0,0,0,.3);
+  background:#0a2143;
+}
+.equipment-hero-visual::after {
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(2,10,24,.02),rgba(2,10,24,.34));
+  pointer-events:none;
+}
+.equipment-hero-visual img { width:100%;height:100%;min-height:520px;object-fit:cover;object-position:center 64%; }
+.equipment-hero-badge {
+  position:absolute;z-index:3;left:26px;right:26px;bottom:24px;
+  padding:17px 19px;border-radius:17px;
+  background:rgba(3,16,34,.78);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.14);
+}
+.equipment-hero-badge span,.equipment-hero-badge strong { display:block; }
+.equipment-hero-badge span { color:var(--blue-300);font-size:.7rem;font-weight:900;letter-spacing:.12em; }
+.equipment-hero-badge strong { margin-top:6px;font-size:1.08rem; }
+.equipment-positioning { background:#fff; }
+.equipment-categories-section { background:linear-gradient(180deg,#f4f7fb,#fff); }
+.equipment-category-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:22px; }
+.equipment-category-card {
+  display:grid;grid-template-columns:.9fr 1.1fr;
+  min-height:320px;overflow:hidden;
+  border-radius:25px;border:1px solid var(--line);
+  background:#fff;box-shadow:var(--shadow-soft);
+}
+.equipment-category-card img { width:100%;height:100%;object-fit:cover; }
+.equipment-category-card>div:last-child { padding:30px;align-self:center; }
+.equipment-category-card>div:last-child>span { color:var(--blue-600);font-size:.76rem;font-weight:900;letter-spacing:.12em; }
+.equipment-category-card h3 { font-size:1.65rem;margin:10px 0 12px; }
+.equipment-category-card p { color:var(--muted); }
+.equipment-category-card b { display:block;color:#36506b;font-size:.82rem;line-height:1.45; }
+.equipment-category-workplace { grid-column:1/-1;grid-template-columns:.7fr 1.3fr;min-height:260px; }
+.workplace-visual {
+  display:grid!important;grid-template-columns:repeat(2,1fr);gap:12px;
+  padding:28px!important;align-content:center!important;
+  background:radial-gradient(circle at 70% 30%,rgba(55,180,255,.22),transparent 38%),linear-gradient(145deg,#07172e,#0d3f73);
+}
+.workplace-visual span {
+  display:grid;place-items:center;min-height:82px;border-radius:17px;
+  color:#d8edff!important;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  font-size:1rem!important;font-weight:900!important;letter-spacing:.09em!important;
+}
+.equipment-brands-section { color:#fff;background:radial-gradient(circle at 82% 18%,rgba(25,157,255,.18),transparent 35%),linear-gradient(135deg,#040b16,#09264a); }
+.equipment-brands-grid { display:grid;grid-template-columns:1fr .9fr;gap:60px;align-items:center; }
+.equipment-brands-grid h2 { color:#fff; }
+.equipment-brands-grid p { color:#c6d5e5; }
+.brand-chip-grid { display:flex;flex-wrap:wrap;gap:9px;margin-top:28px; }
+.brand-chip-grid span { padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#dceafb;font-size:.75rem;font-weight:780; }
+.equipment-brands-visual { padding:18px;border-radius:28px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 60px rgba(0,0,0,.25); }
+.equipment-brands-visual img { width:100%;border-radius:18px; }
+.equipment-products-section { background:#fff; }
+.equipment-product-group { margin-top:32px;padding:30px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(155deg,#fff,#f7faff); }
+.equipment-group-head { display:grid;grid-template-columns:.28fr 1fr;gap:24px;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--line); }
+.equipment-group-head>span { color:var(--blue-600);font-size:.78rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase; }
+.equipment-group-head h3 { margin:0;font-size:1.6rem; }
+.equipment-product-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px; }
+.equipment-product-grid article { padding:22px;border-radius:18px;background:#fff;border:1px solid #e5ebf2; }
+.equipment-product-grid article>span { color:var(--blue-600);font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase; }
+.equipment-product-grid h4 { margin:8px 0 10px;font-size:1.2rem;color:#10213a; }
+.equipment-product-grid p { color:var(--muted);font-size:.91rem;margin:0; }
+.equipment-quote-section .section-head p { color:#bacadc; }
+.equipment-process-grid { display:grid;grid-template-columns:repeat(5,1fr);gap:13px; }
+.equipment-process-grid article { padding:25px 20px;border-radius:19px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12); }
+.equipment-process-grid article>span { display:block;color:var(--blue-300);font-weight:900;letter-spacing:.12em;font-size:.78rem;margin-bottom:26px; }
+.equipment-process-grid h3 { margin-bottom:9px; }
+.equipment-process-grid p { color:#b7c8db;font-size:.9rem;margin:0; }
+.equipment-quote-note { margin-top:24px;padding:20px 22px;border-radius:18px;background:rgba(77,181,255,.1);border:1px solid rgba(108,197,255,.2);display:flex;gap:10px;flex-wrap:wrap; }
+.equipment-quote-note strong { color:#fff; }.equipment-quote-note span { color:#c3d6e9; }
+.equipment-showcase { background:#07182e; }
+.equipment-showcase>img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 68%;filter:saturate(.96) contrast(1.02); }
+.equipment-showcase::after { content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,15,31,.04),rgba(4,15,31,.45)); }
+.equipment-float { position:absolute;z-index:2;padding:14px 16px;border-radius:15px;background:rgba(4,18,37,.79);border:1px solid rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(9px); }
+.equipment-float span,.equipment-float strong { display:block; }.equipment-float span { color:#9fd8ff;font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;font-weight:900; }.equipment-float strong { margin-top:4px;font-size:.95rem; }
+.equipment-float-a { left:7%;bottom:8%; }.equipment-float-b { right:7%;bottom:8%; }
+
+@media (max-width:1040px) {
+  .equipment-hero-grid,.equipment-brands-grid { grid-template-columns:1fr; }
+  .equipment-hero-grid { min-height:auto;padding-top:66px; }
+  .equipment-category-grid { grid-template-columns:1fr; }
+  .equipment-category-workplace { grid-column:auto; }
+  .equipment-product-grid { grid-template-columns:1fr 1fr; }
+  .equipment-process-grid { grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:720px) {
+  .equipment-hero-grid { padding:55px 0 105px; }
+  .equipment-hero-copy h1 { font-size:2.75rem; }
+  .equipment-hero-visual,.equipment-hero-visual img { min-height:430px; }
+  .equipment-category-card,.equipment-category-workplace { grid-template-columns:1fr; }
+  .equipment-category-card img { height:230px; }
+  .equipment-category-card>div:last-child { padding:24px; }
+  .workplace-visual { min-height:230px; }
+  .equipment-product-group { padding:20px; }
+  .equipment-group-head { grid-template-columns:1fr;gap:7px; }
+  .equipment-product-grid,.equipment-process-grid { grid-template-columns:1fr; }
+  .equipment-float { display:none; }
+}
