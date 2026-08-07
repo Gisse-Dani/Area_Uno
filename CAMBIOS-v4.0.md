@@ -6,7 +6,7 @@ Se incorpora la cuarta unidad de la marca: **Área 1 Equipamiento**.
 
 - Nueva página `equipamiento.html`.
 - Nueva unidad en la portada central de Área 1.
-- Navegación de Inicio, Eventos e Inteligencia & Gestión actualizada con Equipamiento.
+- Navegación de Inicio, Eventos e Analítica & Procesos actualizada con Equipamiento.
 - El Shop original se conserva sin cambios de diseño ni lógica.
 - Nuevas imágenes optimizadas para web derivadas del catálogo suministrado.
 - Categorías: servidores e infraestructura, storage/NAS/backup, redes/wireless, UPS/energía y puesto de trabajo/periféricos.

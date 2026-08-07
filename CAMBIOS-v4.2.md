@@ -1,6 +1,6 @@
 # Cambios v4.2
 
-- Renombrada el área "Data" a **"Inteligencia & Gestión"** en navegación, página central, página de servicios y Shop.
+- Renombrada el área "Data" a **"Analítica & Procesos"** en navegación, página central, página de servicios y Shop.
 - Actualizada la propuesta de valor del sitio central para reflejar la nueva denominación comercial.
 - Reemplazadas las imágenes de **Equipamiento** según las referencias indicadas por el usuario:
   - `brands.webp` = marcas
