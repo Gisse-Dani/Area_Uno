@@ -663,3 +663,52 @@ button { cursor: pointer; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+
+/* === Ajustes v5.1.2: navegación general integrada === */
+.ecosystem-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  background: rgba(4, 11, 19, .94);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.ecosystem-inner {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.ecosystem-inner::-webkit-scrollbar { display: none; }
+.ecosystem-inner a {
+  color: #9fb3ca;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  transition: color .2s ease;
+}
+.ecosystem-inner a:hover,
+.ecosystem-inner a.active {
+  color: #ffffff;
+}
+.site-header {
+  top: 44px;
+}
+.site-header.is-sticky {
+  top: 44px;
+}
+.hero-compact {
+  padding-top: 176px;
+}
+@media (max-width: 980px) {
+  .hero-compact {
+    padding-top: 164px;
+  }
+}
