@@ -28,3 +28,10 @@ Sitio institucional integrado de **Área 1**, ahora con cuatro unidades dentro d
 ## Nota sobre Equipamiento
 
 Las familias, modelos y marcas se presentan como referencias presupuestables basadas en el catálogo suministrado. Disponibilidad, configuración final, precio y plazo deben confirmarse en cada cotización.
+
+
+## Contacto y catálogo (v4.4)
+
+- WhatsApp: +54 9 2984 375860
+- Catálogo de equipamiento: `assets/docs/catalogo-area1.pdf`
+- La página `equipamiento.html` incluye acceso directo a cotización y descarga del catálogo.
