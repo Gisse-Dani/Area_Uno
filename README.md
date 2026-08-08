@@ -32,6 +32,6 @@ Las familias, modelos y marcas se presentan como referencias presupuestables bas
 
 ## Contacto y catálogo (v4.4)
 
-- WhatsApp: +54 9 2984 375860
+- WhatsApp: +54 9 2984 513770
 - Catálogo de equipamiento: `assets/docs/catalogo-area1.pdf`
 - La página `equipamiento.html` incluye acceso directo a cotización y descarga del catálogo.
