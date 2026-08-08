@@ -35,3 +35,16 @@ Las familias, modelos y marcas se presentan como referencias presupuestables bas
 - WhatsApp: +54 9 2984 513770
 - Catálogo de equipamiento: `assets/docs/catalogo-area1.pdf`
 - La página `equipamiento.html` incluye acceso directo a cotización y descarga del catálogo.
+
+
+## Formulario de contacto v4.5
+
+El formulario público está en `contacto.html` y envía los mensajes a través de `/api/contact`.
+
+En Vercel configurar estas variables privadas de entorno:
+
+- `GMAIL_USER`: cuenta Gmail que enviará y recibirá las consultas.
+- `GMAIL_APP_PASSWORD`: contraseña de aplicación de Google (16 caracteres, sin espacios).
+- `CONTACT_RECIPIENT`: opcional; si se omite, se utiliza `GMAIL_USER` como destinatario.
+
+La dirección de correo no se renderiza ni se incluye en el HTML público.
