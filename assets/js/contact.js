@@ -76,6 +76,9 @@
       form.reset();
       status.textContent = 'Consulta enviada correctamente. Te responderemos a la brevedad.';
       status.classList.add('is-success');
+      if (typeof window.area1Track === 'function') {
+        window.area1Track('contact_form_sent', { form_name: 'contacto_general' });
+      }
     } catch (error) {
       status.textContent = error.message || 'No pudimos enviar la consulta. Probá nuevamente o escribinos por WhatsApp.';
       status.classList.add('is-error');
