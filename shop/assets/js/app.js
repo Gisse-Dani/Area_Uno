@@ -1,4 +1,21 @@
-const BUILD_VERSION = "5.1.1-integrated";
+const BUILD_VERSION = "5.2.0-auto-categories";
+
+
+const CATEGORY_ORDER = [
+  "Tecnología",
+  "Electrodomésticos",
+  "Hogar y Jardín",
+  "Herramientas",
+  "Oficina y Comercio",
+  "Gaming",
+  "Audio y Video",
+  "Redes y Conectividad",
+  "Servidores e Infraestructura",
+  "Automotor",
+  "Belleza y Cuidado Personal",
+  "Deportes y Tiempo Libre",
+  "Otros"
+];
 
 const state = {
   products: [],
@@ -81,13 +98,21 @@ async function fetchProduct(linkData) {
       affiliateUrl: linkData.url,
       badge: linkData.badge,
       order: linkData.order,
-      category: data.category || "Otras recomendaciones",
+      category: data.category || "Otros",
+      subcategory: data.subcategory || data.marketplaceCategory || "Otros productos",
+      marketplaceCategory: data.marketplaceCategory || "",
+      marketplaceCategoryPath: data.marketplaceCategoryPath || "",
+      classificationSource: data.classificationSource || "",
       error: false
     };
   } catch {
     return {
       title: "Producto recomendado en Mercado Libre",
-      category: "Otras recomendaciones",
+      category: "Otros",
+      subcategory: "Otros productos",
+      marketplaceCategory: "",
+      marketplaceCategoryPath: "",
+      classificationSource: "fallback",
       image: "",
       price: null,
       effectivePrice: null,
@@ -266,7 +291,7 @@ function filteredProducts() {
   if (state.category !== "Todos") list = list.filter(item => item.category === state.category);
   if (state.search) {
     const needle = normalizeText(state.search);
-    list = list.filter(item => normalizeText(`${item.title} ${item.category} ${item.brand || ""}`).includes(needle));
+    list = list.filter(item => normalizeText(`${item.title} ${item.category} ${item.subcategory || ""} ${item.marketplaceCategory || ""} ${item.marketplaceCategoryPath || ""} ${item.brand || ""}`).includes(needle));
   }
   if (state.sort === "priceAsc") list.sort((a, b) => (Number(finalPrice(a)) || Infinity) - (Number(finalPrice(b)) || Infinity));
   if (state.sort === "priceDesc") list.sort((a, b) => (Number(finalPrice(b)) || -1) - (Number(finalPrice(a)) || -1));
@@ -275,7 +300,16 @@ function filteredProducts() {
 }
 
 function renderFilters() {
-  const categories = ["Todos", ...new Set(state.products.map(item => item.category).filter(Boolean))];
+  const available = [...new Set(state.products.map(item => item.category).filter(Boolean))];
+  available.sort((a, b) => {
+    const ai = CATEGORY_ORDER.indexOf(a);
+    const bi = CATEGORY_ORDER.indexOf(b);
+    if (ai === -1 && bi === -1) return a.localeCompare(b, "es");
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+  const categories = ["Todos", ...available];
   els.categoryFilters.innerHTML = categories.map(category => `
     <button class="filter-button ${state.category === category ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>
   `).join("");

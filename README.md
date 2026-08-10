@@ -48,3 +48,8 @@ En Vercel configurar estas variables privadas de entorno:
 - `CONTACT_RECIPIENT`: opcional; si se omite, se utiliza `GMAIL_USER` como destinatario.
 
 La dirección de correo no se renderiza ni se incluye en el HTML público.
+
+
+## Shop: categorías automáticas
+
+Los productos se categorizan automáticamente a partir del título, marca y categoría oficial de Mercado Libre. La carga sigue siendo un enlace por línea en `shop/productos.txt`.

@@ -29,6 +29,165 @@ function decodeEntities(text = "") {
     .replace(/&gt;/g, ">");
 }
 
+
+function normalizeCategoryText(value = "") {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function includesAny(text, terms = []) {
+  return terms.some(term => text.includes(normalizeCategoryText(term)));
+}
+
+const COMMERCIAL_CATEGORY_RULES = [
+  {
+    category: "Servidores e Infraestructura",
+    details: [
+      { name: "Servidores", terms: ["servidor", "server", "proliant", "thinksystem sr", "xeon", "epyc", "microserver"] },
+      { name: "Storage y Backup", terms: ["storage", "nas", "san", "msa 206", "thinksystem de", "drivestor", "lockerstor", "cabina de almacenamiento"] },
+      { name: "UPS y Energía", terms: ["ups", "smart ups", "easy ups", "back ups", "apc", "srtg", "srv", "bateria ups"] },
+      { name: "Racks e Infraestructura", terms: ["rack", "gabinete de red", "gabinete servidor", "datacenter", "data center"] }
+    ]
+  },
+  {
+    category: "Redes y Conectividad",
+    details: [
+      { name: "Routers", terms: ["router", "gateway", "cloud core router", "security gateway"] },
+      { name: "Switching", terms: ["switch", "switching", "sfp", "qsfp", "poe", "ethernet"] },
+      { name: "Wi-Fi y Access Points", terms: ["access point", "punto de acceso", "wifi", "wi fi", "wireless", "unifi ap", "aruba instant on", "mesh"] },
+      { name: "Enlaces y Outdoor", terms: ["airmax", "airfiber", "nanostation", "litebeam", "powerbeam", "rocket", "outdoor", "antena"] },
+      { name: "Conectividad empresarial", terms: ["mikrotik", "ubiquiti", "aruba", "cisco", "networking"] }
+    ]
+  },
+  {
+    category: "Gaming",
+    details: [
+      { name: "Consolas", terms: ["playstation", "xbox", "nintendo", "consola"] },
+      { name: "Accesorios Gaming", terms: ["joystick", "gamepad", "volante gamer", "teclado gamer", "mouse gamer", "auricular gamer"] },
+      { name: "Gaming", terms: ["gaming", "gamer"] }
+    ]
+  },
+  {
+    category: "Audio y Video",
+    details: [
+      { name: "Televisores", terms: ["smart tv", "televisor", "oled tv", "qled tv", "led tv"] },
+      { name: "Audio", terms: ["parlante", "soundbar", "barra de sonido", "home theater", "equipo de audio", "microfono", "auricular", "headphone"] },
+      { name: "Proyección", terms: ["proyector", "proyeccion", "pantalla de proyeccion"] },
+      { name: "Video", terms: ["reproductor multimedia", "streaming stick", "chromecast"] }
+    ]
+  },
+  {
+    category: "Electrodomésticos",
+    details: [
+      { name: "Lavado", terms: ["lavarropas", "lavasecarropas", "secadora de ropa", "lavavajillas"] },
+      { name: "Refrigeración", terms: ["heladera", "freezer", "frigobar", "refrigerador"] },
+      { name: "Cocina", terms: ["microondas", "horno electrico", "anafe", "freidora", "cafetera", "licuadora", "batidora", "tostadora", "pava electrica", "procesadora de alimentos"] },
+      { name: "Climatización", terms: ["aire acondicionado", "climatizador", "calefactor", "estufa electrica", "ventilador"] },
+      { name: "Limpieza", terms: ["aspiradora", "robot aspirador", "limpiadora a vapor"] },
+      { name: "Electrodomésticos", terms: ["electrodomestico", "electrodomesticos"] }
+    ]
+  },
+  {
+    category: "Oficina y Comercio",
+    details: [
+      { name: "Impresión", terms: ["impresora", "multifuncion", "toner", "cartucho de tinta"] },
+      { name: "Captura y POS", terms: ["scanner", "escaner", "lector de codigo", "codigo de barras", "colector", "terminal pos", "zebra"] },
+      { name: "Mobiliario de Oficina", terms: ["silla de oficina", "escritorio de oficina", "mesa de oficina"] },
+      { name: "Oficina", terms: ["oficina", "comercio", "punto de venta"] }
+    ]
+  },
+  {
+    category: "Herramientas",
+    details: [
+      { name: "Herramientas Eléctricas", terms: ["taladro", "amoladora", "atornillador", "sierra circular", "sierra caladora", "lijadora", "rotomartillo"] },
+      { name: "Taller", terms: ["soldadora", "compresor", "hidrolavadora", "caja de herramientas"] },
+      { name: "Herramientas Manuales", terms: ["destornillador", "llave crique", "llave tubo", "pinza", "alicate", "martillo"] },
+      { name: "Herramientas", terms: ["herramienta", "herramientas"] }
+    ]
+  },
+  {
+    category: "Automotor",
+    details: [
+      { name: "Accesorios para Autos", terms: ["accesorio auto", "accesorios para autos", "cubre auto", "alfombra auto", "soporte celular auto"] },
+      { name: "Repuestos", terms: ["repuesto auto", "repuestos", "pastilla de freno", "filtro de aceite", "amortiguador"] },
+      { name: "Neumáticos", terms: ["neumatico", "cubierta auto", "llanta"] },
+      { name: "Automotor", terms: ["automotor", "autos camionetas", "moto motocicleta"] }
+    ]
+  },
+  {
+    category: "Belleza y Cuidado Personal",
+    details: [
+      { name: "Cuidado Personal", terms: ["afeitadora", "depiladora", "secador de pelo", "planchita", "cortadora de pelo", "cepillo electrico"] },
+      { name: "Belleza", terms: ["belleza", "cuidado personal", "perfume", "cosmetica"] }
+    ]
+  },
+  {
+    category: "Deportes y Tiempo Libre",
+    details: [
+      { name: "Fitness", terms: ["mancuerna", "cinta de correr", "bicicleta fija", "fitness", "gimnasio"] },
+      { name: "Ciclismo", terms: ["bicicleta", "ciclismo", "casco bicicleta"] },
+      { name: "Camping", terms: ["carpa", "camping", "bolsa de dormir"] },
+      { name: "Deportes", terms: ["deporte", "deportes", "futbol", "padel", "tenis"] }
+    ]
+  },
+  {
+    category: "Hogar y Jardín",
+    details: [
+      { name: "Baño y Grifería", terms: ["grifo", "griferia", "canilla", "ducha", "baño", "sanitario"] },
+      { name: "Muebles", terms: ["mueble", "mesa comedor", "sillon", "sofa", "colchon", "cama", "placard"] },
+      { name: "Iluminación", terms: ["lampara", "luminaria", "iluminacion", "foco led"] },
+      { name: "Jardín", terms: ["jardin", "jardineria", "pileta", "manguera", "cortadora de cesped"] },
+      { name: "Cocina y Bazar", terms: ["bateria de cocina", "vajilla", "sarten", "olla", "cubiertos", "organizador cocina"] },
+      { name: "Hogar", terms: ["hogar", "decoracion", "bazar"] }
+    ]
+  },
+  {
+    category: "Tecnología",
+    details: [
+      { name: "Notebooks y Computación", terms: ["notebook", "laptop", "ultrabook", "macbook", "chromebook"] },
+      { name: "Computadoras de Escritorio", terms: ["computadora de escritorio", "desktop", "all in one", "mini pc"] },
+      { name: "Monitores", terms: ["monitor", "display monitor"] },
+      { name: "Celulares y Smartphones", terms: ["celular", "smartphone", "iphone", "galaxy phone", "telefono movil"] },
+      { name: "Tablets", terms: ["tablet", "ipad"] },
+      { name: "Componentes", terms: ["memoria ram", "placa de video", "gpu", "procesador", "motherboard", "placa madre", "fuente pc"] },
+      { name: "Almacenamiento", terms: ["ssd", "disco rigido", "disco duro", "hard drive", "pendrive", "memoria usb"] },
+      { name: "Periféricos", terms: ["webcam", "teclado", "mouse", "dock", "hub usb", "cargador notebook"] },
+      { name: "Tecnología", terms: ["computacion", "informatica", "electronica", "tecnologia"] }
+    ]
+  }
+];
+
+function classifyProduct({ title = "", brand = "", marketplaceCategory = "", marketplaceCategoryPath = "" } = {}) {
+  const titleText = normalizeCategoryText(title);
+  const officialText = normalizeCategoryText(`${marketplaceCategoryPath} ${marketplaceCategory}`);
+  const brandText = normalizeCategoryText(brand);
+  const combined = `${titleText} ${officialText} ${brandText}`.trim();
+
+  for (const rule of COMMERCIAL_CATEGORY_RULES) {
+    for (const detail of rule.details) {
+      if (includesAny(combined, detail.terms)) {
+        return {
+          category: rule.category,
+          subcategory: detail.name,
+          classificationSource: officialText && includesAny(officialText, detail.terms) ? "mercado-libre+reglas" : "titulo+reglas"
+        };
+      }
+    }
+  }
+
+  const fallbackDetail = marketplaceCategory || "Otros productos";
+  return {
+    category: "Otros",
+    subcategory: fallbackDetail,
+    classificationSource: marketplaceCategory ? "mercado-libre-sin-mapeo" : "fallback"
+  };
+}
+
 function metaContent(html, key) {
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const patterns = [
@@ -700,7 +859,8 @@ module.exports = async function handler(req, res) {
   const itemId = findItemId(`${page.finalUrl} ${productScope.html}`) || findItemId(page.html);
 
   let item = null;
-  let category = "";
+  let marketplaceCategory = "";
+  let marketplaceCategoryPath = "";
 
   if (itemId) {
     try {
@@ -711,7 +871,10 @@ module.exports = async function handler(req, res) {
   if (item?.category_id) {
     try {
       const categoryData = await fetchJson(`https://api.mercadolibre.com/categories/${item.category_id}`);
-      category = categoryData?.name || "";
+      marketplaceCategory = categoryData?.name || "";
+      marketplaceCategoryPath = Array.isArray(categoryData?.path_from_root)
+        ? categoryData.path_from_root.map(entry => entry?.name).filter(Boolean).join(" > ")
+        : "";
     } catch {}
   }
 
@@ -729,6 +892,7 @@ module.exports = async function handler(req, res) {
   const currency = extractCurrency({ html: productScope.html, item, structuredProduct: productScope.scoped ? null : structuredProduct, jsonValues: scopedJsonValues });
   const brand = attributeValue(item?.attributes, "BRAND") ||
     (typeof structuredProduct?.brand === "string" ? structuredProduct.brand : structuredProduct?.brand?.name) || "";
+  const classification = classifyProduct({ title, brand, marketplaceCategory, marketplaceCategoryPath });
 
   const payload = {
     id: itemId || null,
@@ -752,7 +916,11 @@ module.exports = async function handler(req, res) {
     priceSource: pricing.priceSource,
     originalPriceSource: pricing.originalPriceSource,
     priceAutomatic: pricing.price != null,
-    category: category || "Otras recomendaciones",
+    category: classification.category,
+    subcategory: classification.subcategory,
+    marketplaceCategory: marketplaceCategory || "",
+    marketplaceCategoryPath: marketplaceCategoryPath || "",
+    classificationSource: classification.classificationSource,
     brand,
     condition: item?.condition || "",
     freeShipping: Boolean(item?.shipping?.free_shipping),
@@ -783,6 +951,13 @@ module.exports = async function handler(req, res) {
         anchor: productScope.anchor
       },
       promotionInfo,
+      classification: {
+        commercialCategory: classification.category,
+        subcategory: classification.subcategory,
+        marketplaceCategory,
+        marketplaceCategoryPath,
+        source: classification.classificationSource
+      },
       candidatePrices: priceCandidates.slice(0, 20)
     };
   }
