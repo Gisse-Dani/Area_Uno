@@ -46,22 +46,23 @@ function includesAny(text, terms = []) {
 
 const COMMERCIAL_CATEGORY_RULES = [
   {
-    category: "Servidores e Infraestructura",
+    category: "Electrodomésticos",
     details: [
-      { name: "Servidores", terms: ["servidor", "server", "proliant", "thinksystem sr", "xeon", "epyc", "microserver"] },
-      { name: "Storage y Backup", terms: ["storage", "nas", "san", "msa 206", "thinksystem de", "drivestor", "lockerstor", "cabina de almacenamiento"] },
-      { name: "UPS y Energía", terms: ["ups", "smart ups", "easy ups", "back ups", "apc", "srtg", "srv", "bateria ups"] },
-      { name: "Racks e Infraestructura", terms: ["rack", "gabinete de red", "gabinete servidor", "datacenter", "data center"] }
+      { name: "Refrigeración", terms: ["heladera", "heladeras", "freezer", "freezers", "frigobar", "refrigerador", "refrigeradora", "congelador"] },
+      { name: "Lavado", terms: ["lavarropas", "lavasecarropas", "secadora de ropa", "lavavajillas"] },
+      { name: "Cocina", terms: ["microondas", "horno electrico", "anafe", "freidora", "cafetera", "licuadora", "batidora", "tostadora", "pava electrica", "procesadora de alimentos", "sandwichera"] },
+      { name: "Climatización", terms: ["aire acondicionado", "climatizador", "calefactor", "estufa electrica", "ventilador", "caloventor"] },
+      { name: "Limpieza", terms: ["aspiradora", "robot aspirador", "limpiadora a vapor"] },
+      { name: "Electrodomésticos", terms: ["electrodomestico", "electrodomesticos"] }
     ]
   },
   {
-    category: "Redes y Conectividad",
+    category: "Belleza y Cuidado Personal",
     details: [
-      { name: "Routers", terms: ["router", "gateway", "cloud core router", "security gateway"] },
-      { name: "Switching", terms: ["switch", "switching", "sfp", "qsfp", "poe", "ethernet"] },
-      { name: "Wi-Fi y Access Points", terms: ["access point", "punto de acceso", "wifi", "wi fi", "wireless", "unifi ap", "aruba instant on", "mesh"] },
-      { name: "Enlaces y Outdoor", terms: ["airmax", "airfiber", "nanostation", "litebeam", "powerbeam", "rocket", "outdoor", "antena"] },
-      { name: "Conectividad empresarial", terms: ["mikrotik", "ubiquiti", "aruba", "cisco", "networking"] }
+      { name: "Cabello", terms: ["secador de pelo", "secador cabello", "planchita", "plancha de pelo", "alisador", "cepillo secador", "cepillo alisador", "cortadora de pelo", "cortapelo", "trimmer"] },
+      { name: "Depilación y Afeitado", terms: ["afeitadora", "shaver", "depiladora", "epilador", "maquina de afeitar"] },
+      { name: "Cuidado Personal", terms: ["cepillo electrico dental", "irrigador dental", "masajeador", "cuidado personal"] },
+      { name: "Belleza", terms: ["belleza", "perfume", "cosmetica", "cosmetico", "maquillaje", "serum", "skincare", "cuidado facial", "cuidado capilar"] }
     ]
   },
   {
@@ -75,30 +76,10 @@ const COMMERCIAL_CATEGORY_RULES = [
   {
     category: "Audio y Video",
     details: [
-      { name: "Televisores", terms: ["smart tv", "televisor", "oled tv", "qled tv", "led tv"] },
+      { name: "Televisores", terms: ["smart tv", "televisor", "oled tv", "qled tv", "led tv", "television"] },
       { name: "Audio", terms: ["parlante", "soundbar", "barra de sonido", "home theater", "equipo de audio", "microfono", "auricular", "headphone"] },
       { name: "Proyección", terms: ["proyector", "proyeccion", "pantalla de proyeccion"] },
       { name: "Video", terms: ["reproductor multimedia", "streaming stick", "chromecast"] }
-    ]
-  },
-  {
-    category: "Electrodomésticos",
-    details: [
-      { name: "Lavado", terms: ["lavarropas", "lavasecarropas", "secadora de ropa", "lavavajillas"] },
-      { name: "Refrigeración", terms: ["heladera", "freezer", "frigobar", "refrigerador"] },
-      { name: "Cocina", terms: ["microondas", "horno electrico", "anafe", "freidora", "cafetera", "licuadora", "batidora", "tostadora", "pava electrica", "procesadora de alimentos"] },
-      { name: "Climatización", terms: ["aire acondicionado", "climatizador", "calefactor", "estufa electrica", "ventilador"] },
-      { name: "Limpieza", terms: ["aspiradora", "robot aspirador", "limpiadora a vapor"] },
-      { name: "Electrodomésticos", terms: ["electrodomestico", "electrodomesticos"] }
-    ]
-  },
-  {
-    category: "Oficina y Comercio",
-    details: [
-      { name: "Impresión", terms: ["impresora", "multifuncion", "toner", "cartucho de tinta"] },
-      { name: "Captura y POS", terms: ["scanner", "escaner", "lector de codigo", "codigo de barras", "colector", "terminal pos", "zebra"] },
-      { name: "Mobiliario de Oficina", terms: ["silla de oficina", "escritorio de oficina", "mesa de oficina"] },
-      { name: "Oficina", terms: ["oficina", "comercio", "punto de venta"] }
     ]
   },
   {
@@ -111,19 +92,32 @@ const COMMERCIAL_CATEGORY_RULES = [
     ]
   },
   {
+    category: "Hogar y Jardín",
+    details: [
+      { name: "Baño y Grifería", terms: ["grifo", "griferia", "canilla", "ducha", "sanitario", "lavatorio", "bacha"] },
+      { name: "Muebles", terms: ["mueble", "mesa comedor", "sillon", "sofa", "colchon", "cama", "placard"] },
+      { name: "Iluminación", terms: ["lampara", "luminaria", "iluminacion", "foco led"] },
+      { name: "Jardín", terms: ["jardin", "jardineria", "pileta", "manguera", "cortadora de cesped"] },
+      { name: "Cocina y Bazar", terms: ["bateria de cocina", "vajilla", "sarten", "olla", "cubiertos", "organizador cocina"] },
+      { name: "Hogar", terms: ["hogar", "decoracion", "bazar"] }
+    ]
+  },
+  {
+    category: "Oficina y Comercio",
+    details: [
+      { name: "Impresión", terms: ["impresora", "multifuncion", "toner", "cartucho de tinta"] },
+      { name: "Captura y POS", terms: ["scanner", "escaner", "lector de codigo", "codigo de barras", "colector", "terminal pos"] },
+      { name: "Mobiliario de Oficina", terms: ["silla de oficina", "escritorio de oficina", "mesa de oficina"] },
+      { name: "Oficina", terms: ["oficina", "punto de venta"] }
+    ]
+  },
+  {
     category: "Automotor",
     details: [
       { name: "Accesorios para Autos", terms: ["accesorio auto", "accesorios para autos", "cubre auto", "alfombra auto", "soporte celular auto"] },
       { name: "Repuestos", terms: ["repuesto auto", "repuestos", "pastilla de freno", "filtro de aceite", "amortiguador"] },
       { name: "Neumáticos", terms: ["neumatico", "cubierta auto", "llanta"] },
       { name: "Automotor", terms: ["automotor", "autos camionetas", "moto motocicleta"] }
-    ]
-  },
-  {
-    category: "Belleza y Cuidado Personal",
-    details: [
-      { name: "Cuidado Personal", terms: ["afeitadora", "depiladora", "secador de pelo", "planchita", "cortadora de pelo", "cepillo electrico"] },
-      { name: "Belleza", terms: ["belleza", "cuidado personal", "perfume", "cosmetica"] }
     ]
   },
   {
@@ -136,48 +130,114 @@ const COMMERCIAL_CATEGORY_RULES = [
     ]
   },
   {
-    category: "Hogar y Jardín",
-    details: [
-      { name: "Baño y Grifería", terms: ["grifo", "griferia", "canilla", "ducha", "baño", "sanitario"] },
-      { name: "Muebles", terms: ["mueble", "mesa comedor", "sillon", "sofa", "colchon", "cama", "placard"] },
-      { name: "Iluminación", terms: ["lampara", "luminaria", "iluminacion", "foco led"] },
-      { name: "Jardín", terms: ["jardin", "jardineria", "pileta", "manguera", "cortadora de cesped"] },
-      { name: "Cocina y Bazar", terms: ["bateria de cocina", "vajilla", "sarten", "olla", "cubiertos", "organizador cocina"] },
-      { name: "Hogar", terms: ["hogar", "decoracion", "bazar"] }
-    ]
-  },
-  {
     category: "Tecnología",
     details: [
       { name: "Notebooks y Computación", terms: ["notebook", "laptop", "ultrabook", "macbook", "chromebook"] },
-      { name: "Computadoras de Escritorio", terms: ["computadora de escritorio", "desktop", "all in one", "mini pc"] },
+      { name: "Computadoras de Escritorio", terms: ["computadora de escritorio", "pc escritorio", "desktop", "all in one", "mini pc"] },
       { name: "Monitores", terms: ["monitor", "display monitor"] },
-      { name: "Celulares y Smartphones", terms: ["celular", "smartphone", "iphone", "galaxy phone", "telefono movil"] },
+      { name: "Celulares y Smartphones", terms: ["celular", "smartphone", "iphone", "telefono movil"] },
       { name: "Tablets", terms: ["tablet", "ipad"] },
       { name: "Componentes", terms: ["memoria ram", "placa de video", "gpu", "procesador", "motherboard", "placa madre", "fuente pc"] },
       { name: "Almacenamiento", terms: ["ssd", "disco rigido", "disco duro", "hard drive", "pendrive", "memoria usb"] },
       { name: "Periféricos", terms: ["webcam", "teclado", "mouse", "dock", "hub usb", "cargador notebook"] },
       { name: "Tecnología", terms: ["computacion", "informatica", "electronica", "tecnologia"] }
     ]
+  },
+  {
+    category: "Redes y Conectividad",
+    details: [
+      { name: "Routers", terms: ["router", "gateway", "cloud core router", "security gateway"] },
+      { name: "Switching", terms: ["switch ethernet", "switch poe", "switch gigabit", "switch administrable", "sfp", "qsfp"] },
+      { name: "Wi-Fi y Access Points", terms: ["access point", "punto de acceso", "wifi 6", "wi fi 6", "wireless", "unifi ap", "aruba instant on", "mesh wifi"] },
+      { name: "Enlaces y Outdoor", terms: ["airmax", "airfiber", "nanostation", "litebeam", "powerbeam", "rocket prisma", "antena mikrotik"] },
+      { name: "Conectividad empresarial", terms: ["mikrotik", "ubiquiti", "aruba cx", "cisco switch"] }
+    ]
+  },
+  {
+    category: "Servidores e Infraestructura",
+    details: [
+      { name: "Servidores", terms: ["servidor hpe", "servidor lenovo", "server hpe", "server lenovo", "proliant", "thinksystem sr", "xeon server", "microserver"] },
+      { name: "Storage y Backup", terms: ["storage hpe", "storage lenovo", "servidor nas", "nas asustor", "san storage", "msa 206", "thinksystem de", "drivestor", "lockerstor", "cabina de almacenamiento"] },
+      { name: "UPS y Energía", terms: ["ups apc", "smart ups", "easy ups", "back ups pro", "srtg", "apc srv"] },
+      { name: "Racks e Infraestructura", terms: ["rack servidor", "rack de red", "gabinete de red", "gabinete servidor", "datacenter", "data center"] }
+    ]
   }
 ];
+
+const OFFICIAL_CATEGORY_HINTS = [
+  { category: "Electrodomésticos", subcategory: "Electrodomésticos", terms: ["electrodomesticos", "aires acondicionados", "climatizacion", "heladeras y freezers", "lavado"] },
+  { category: "Belleza y Cuidado Personal", subcategory: "Belleza y Cuidado Personal", terms: ["belleza y cuidado personal", "cuidado personal", "perfumes", "maquillaje"] },
+  { category: "Tecnología", subcategory: "Tecnología", terms: ["computacion", "celulares y telefonos", "tablets", "componentes de pc", "monitores y accesorios"] },
+  { category: "Audio y Video", subcategory: "Audio y Video", terms: ["electronica audio y video", "televisores", "audio"] },
+  { category: "Gaming", subcategory: "Gaming", terms: ["consolas y videojuegos", "videojuegos"] },
+  { category: "Herramientas", subcategory: "Herramientas", terms: ["herramientas", "construccion"] },
+  { category: "Hogar y Jardín", subcategory: "Hogar y Jardín", terms: ["hogar muebles y jardin", "hogar y muebles", "jardin"] },
+  { category: "Oficina y Comercio", subcategory: "Oficina y Comercio", terms: ["industrias y oficinas", "oficina", "impresion"] },
+  { category: "Automotor", subcategory: "Automotor", terms: ["accesorios para vehiculos", "autos motos y otros"] },
+  { category: "Deportes y Tiempo Libre", subcategory: "Deportes y Tiempo Libre", terms: ["deportes y fitness", "deportes"] }
+];
+
+function containsCategoryTerm(text, term) {
+  const haystack = ` ${normalizeCategoryText(text)} `;
+  const needle = normalizeCategoryText(term);
+  if (!needle) return false;
+  if (needle.length <= 3) return haystack.includes(` ${needle} `);
+  return haystack.includes(` ${needle} `) || normalizeCategoryText(text).includes(needle);
+}
+
+function findRuleMatch(text) {
+  if (!text) return null;
+  for (const rule of COMMERCIAL_CATEGORY_RULES) {
+    for (const detail of rule.details) {
+      const matchedTerm = detail.terms.find(term => containsCategoryTerm(text, term));
+      if (matchedTerm) return { category: rule.category, subcategory: detail.name, matchedTerm };
+    }
+  }
+  return null;
+}
+
+function findOfficialHint(officialText) {
+  for (const hint of OFFICIAL_CATEGORY_HINTS) {
+    if (hint.terms.some(term => containsCategoryTerm(officialText, term))) return hint;
+  }
+  return null;
+}
 
 function classifyProduct({ title = "", brand = "", marketplaceCategory = "", marketplaceCategoryPath = "" } = {}) {
   const titleText = normalizeCategoryText(title);
   const officialText = normalizeCategoryText(`${marketplaceCategoryPath} ${marketplaceCategory}`);
-  const brandText = normalizeCategoryText(brand);
-  const combined = `${titleText} ${officialText} ${brandText}`.trim();
 
-  for (const rule of COMMERCIAL_CATEGORY_RULES) {
-    for (const detail of rule.details) {
-      if (includesAny(combined, detail.terms)) {
-        return {
-          category: rule.category,
-          subcategory: detail.name,
-          classificationSource: officialText && includesAny(officialText, detail.terms) ? "mercado-libre+reglas" : "titulo+reglas"
-        };
-      }
-    }
+  // 1) El título del producto manda. Esto evita que contenido lateral de una página
+  // social de Mercado Libre arrastre una categoría ajena (ej.: un freezer a servidores).
+  const titleMatch = findRuleMatch(titleText);
+  if (titleMatch) {
+    return {
+      category: titleMatch.category,
+      subcategory: titleMatch.subcategory,
+      classificationSource: "titulo+reglas"
+    };
+  }
+
+  // 2) Si el título no alcanza, usamos únicamente familias oficiales amplias de ML.
+  // No usamos marcas solas para clasificar: una marca puede vender varias líneas.
+  const officialHint = findOfficialHint(officialText);
+  if (officialHint) {
+    return {
+      category: officialHint.category,
+      subcategory: marketplaceCategory || officialHint.subcategory,
+      classificationSource: "mercado-libre+familia"
+    };
+  }
+
+  // 3) Para infraestructura/redes exigimos una señal explícita en el título.
+  // Así evitamos falsos positivos por bloques de recomendaciones de Mercado Libre.
+  const officialSpecific = findRuleMatch(officialText);
+  if (officialSpecific && !["Servidores e Infraestructura", "Redes y Conectividad"].includes(officialSpecific.category)) {
+    return {
+      category: officialSpecific.category,
+      subcategory: officialSpecific.subcategory,
+      classificationSource: "mercado-libre+reglas"
+    };
   }
 
   const fallbackDetail = marketplaceCategory || "Otros productos";

@@ -1,4 +1,4 @@
-const BUILD_VERSION = "5.2.0-auto-categories";
+const BUILD_VERSION = "5.3.0-smart-loading-categories";
 
 
 const CATEGORY_ORDER = [
@@ -19,7 +19,7 @@ const CATEGORY_ORDER = [
 
 const state = {
   products: [],
-  category: "Todos",
+  category: "Tecnología",
   search: "",
   sort: "default",
   visibleCount: 12
@@ -40,7 +40,9 @@ const els = {
   backTop: document.querySelector("#backTop"),
   menuToggle: document.querySelector(".menu-toggle"),
   nav: document.querySelector(".nav"),
-  header: document.querySelector(".site-header")
+  header: document.querySelector(".site-header"),
+  catalogLoading: document.querySelector("#catalogLoading"),
+  loadingProgress: document.querySelector("#loadingProgress")
 };
 
 const defaultMoney = new Intl.NumberFormat("es-AR", {
@@ -90,7 +92,7 @@ async function getLinks() {
 async function fetchProduct(linkData) {
   try {
     const query = new URLSearchParams({ url: linkData.url });
-    const response = await fetch(`/api/product?${query.toString()}`, { cache: "no-store" });
+    const response = await fetch(`/api/product?${query.toString()}`, { cache: "default" });
     if (!response.ok) throw new Error("Producto no disponible");
     const data = await response.json();
     return {
@@ -133,17 +135,38 @@ async function fetchProduct(linkData) {
   }
 }
 
-async function mapWithConcurrency(items, limit, mapper) {
+async function mapWithConcurrency(items, limit, mapper, onProgress) {
   const results = new Array(items.length);
   let cursor = 0;
+  let completed = 0;
   async function worker() {
     while (cursor < items.length) {
       const index = cursor++;
       results[index] = await mapper(items[index], index);
+      completed += 1;
+      if (typeof onProgress === "function") onProgress(completed, items.length);
     }
   }
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
   return results;
+}
+
+function showCatalogLoading(total = 0) {
+  if (els.catalogLoading) els.catalogLoading.hidden = false;
+  if (els.loadingProgress) {
+    els.loadingProgress.textContent = total > 0
+      ? `Buscando 0 de ${total} productos…`
+      : "Preparando catálogo…";
+  }
+  els.resultsCopy.textContent = "Estamos preparando las recomendaciones para vos…";
+}
+
+function updateCatalogLoading(completed, total) {
+  if (els.loadingProgress) els.loadingProgress.textContent = `Buscando ${completed} de ${total} productos…`;
+}
+
+function hideCatalogLoading() {
+  if (els.catalogLoading) els.catalogLoading.hidden = true;
 }
 
 function formatPrice(value, currency = "ARS") {
@@ -309,7 +332,10 @@ function renderFilters() {
     if (bi === -1) return -1;
     return ai - bi;
   });
-  const categories = ["Todos", ...available];
+  if (!available.includes(state.category)) {
+    state.category = available.includes("Tecnología") ? "Tecnología" : (available[0] || "Todos");
+  }
+  const categories = [...available, "Todos"];
   els.categoryFilters.innerHTML = categories.map(category => `
     <button class="filter-button ${state.category === category ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>
   `).join("");
@@ -400,8 +426,10 @@ function setupInteractions() {
 
 async function init() {
   setupInteractions();
+  showCatalogLoading();
   try {
     const links = await getLinks();
+    showCatalogLoading(links.length);
     if (!links.length) {
       state.products = [];
       els.productGrid.innerHTML = "";
@@ -413,14 +441,16 @@ async function init() {
       updateCounters();
       renderHeroPreview();
       renderFeatured();
+      hideCatalogLoading();
       return;
     }
-    state.products = await mapWithConcurrency(links, 4, fetchProduct);
+    state.products = await mapWithConcurrency(links, 6, fetchProduct, updateCatalogLoading);
     updateCounters();
     renderHeroPreview();
     renderFeatured();
     renderFilters();
     renderProducts();
+    hideCatalogLoading();
   } catch {
     els.productGrid.innerHTML = "";
     els.productGrid.hidden = true;
@@ -428,6 +458,7 @@ async function init() {
     els.emptyState.querySelector("h3").textContent = "No pudimos cargar el catálogo";
     els.emptyState.querySelector("p").textContent = "Probá nuevamente en unos instantes.";
     els.resultsCopy.textContent = "No pudimos cargar los productos";
+    hideCatalogLoading();
     renderHeroPreview();
     renderFeatured();
   }

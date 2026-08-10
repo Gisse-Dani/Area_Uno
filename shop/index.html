@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shop/assets/css/styles.css?v=5.1.2">
-  <script defer src="/shop/assets/js/app.js?v=5.2.0"></script>
+  <link rel="stylesheet" href="/shop/assets/css/styles.css?v=5.4.0">
+  <script defer src="/shop/assets/js/app.js?v=5.3.0"></script>
 </head>
 <body>
   <a class="skip-link" href="#catalogo">Ir al catálogo</a>
@@ -106,8 +106,17 @@
 
         <div class="filter-row" id="categoryFilters" aria-label="Filtrar por categoría"></div>
         <div class="catalog-meta">
-          <p id="resultsCopy" aria-live="polite">Cargando recomendaciones…</p>
+          <p id="resultsCopy" aria-live="polite">Preparando la selección…</p>
           <span class="live-dot"><i></i> Información pública del enlace</span>
+        </div>
+
+        <div class="catalog-loading" id="catalogLoading" role="status" aria-live="polite">
+          <div class="catalog-loading-spinner" aria-hidden="true"><span></span></div>
+          <div class="catalog-loading-copy">
+            <strong>Aguardá un momento. Estamos buscando productos para vos.</strong>
+            <p>Estamos actualizando la información, los precios y las categorías de la selección.</p>
+            <small id="loadingProgress">Preparando catálogo…</small>
+          </div>
         </div>
 
         <div class="product-grid" id="productGrid">
