@@ -177,8 +177,10 @@ h3 { font-size: 1.28rem; line-height: 1.24; letter-spacing: -.02em; }
 .shop-showcase { background: radial-gradient(circle at 60% 35%, rgba(13,145,239,.24), transparent 40%), linear-gradient(145deg,#061326,#0b396d); }
 .shop-showcase > img:first-child { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .24; }
 .shop-symbol { position: absolute; width: 42%; right: 14%; top: 18%; filter: drop-shadow(0 24px 30px rgba(0,0,0,.4)); }
-.shop-card { position: absolute; width: 190px; padding: 18px; border: 1px solid rgba(255,255,255,.2); border-radius: 18px; background: rgba(255,255,255,.1); color: #fff; backdrop-filter: blur(12px); box-shadow: 0 20px 40px rgba(0,0,0,.2); }
-.shop-card span, .shop-card small { display: block; color: #bed2e8; }.shop-card b { display: block; font-size: 1.45rem; margin: 6px 0; }
+.shop-card { position: absolute; width: 210px; padding: 18px; border: 1px solid rgba(255,255,255,.24); border-radius: 18px; background: rgba(255,255,255,.11); color: #fff; text-decoration: none; backdrop-filter: blur(12px); box-shadow: 0 20px 40px rgba(0,0,0,.2); transition: transform .2s ease, background .2s ease, border-color .2s ease; z-index: 3; }
+.shop-card:hover, .shop-card:focus-visible { transform: translateY(-5px); background: rgba(255,255,255,.18); border-color: rgba(97,190,255,.72); outline: none; }
+.shop-card:focus-visible { box-shadow: 0 0 0 3px rgba(57,170,255,.28), 0 20px 40px rgba(0,0,0,.2); }
+.shop-card span, .shop-card small { display: block; color: #bed2e8; }.shop-card b { display: block; font-size: 1.35rem; line-height: 1.15; margin: 7px 0; }.shop-card small { line-height: 1.35; }
 .shop-card-a { left: 8%; bottom: 12%; }.shop-card-b { right: 7%; bottom: 8%; }
 .event-collage { background: linear-gradient(145deg, #f5e7e5, #fefaf7); }
 .event-collage img { position: absolute; object-fit: cover; border-radius: 18px; box-shadow: 0 20px 46px rgba(82,55,64,.18); }

@@ -1,4 +1,4 @@
-const BUILD_VERSION = "5.3.0-smart-loading-categories";
+const BUILD_VERSION = "5.4.0-home-deeplinks";
 
 
 const CATEGORY_ORDER = [
@@ -59,6 +59,17 @@ function escapeHtml(value = "") {
 
 function normalizeText(value = "") {
   return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+function applyUrlFilters() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedCategory = params.get("categoria");
+  const requestedSearch = params.get("q");
+  if (requestedCategory) state.category = requestedCategory.trim();
+  if (requestedSearch) {
+    state.search = requestedSearch.trim();
+    if (els.searchInput) els.searchInput.value = state.search;
+  }
 }
 
 function extractUrl(line = "") {
@@ -426,6 +437,7 @@ function setupInteractions() {
 
 async function init() {
   setupInteractions();
+  applyUrlFilters();
   showCatalogLoading();
   try {
     const links = await getLinks();
