@@ -5,6 +5,7 @@ Sitio institucional integrado de **Área 1**, ahora con cuatro unidades dentro d
 - **Área 1 Shop**: catálogo y curaduría de productos dentro de `/shop`.
 - **Área 1 Proyectos Digitales**: invitaciones digitales y micrositios para celebraciones.
 - **Área 1 Analítica & Procesos**: servicios profesionales de análisis de datos, relevamiento de procesos, tableros e informes.
+- **Área 1 Equipamiento**: infraestructura, conectividad, storage, energía y puestos de trabajo con cotización por proyecto.
 - **Área 1 Proyectos Digitales**: equipamiento tecnológico presupuestable para proyectos, con servidores, storage, redes, wireless, UPS y puesto de trabajo.
 
 ## Archivos principales

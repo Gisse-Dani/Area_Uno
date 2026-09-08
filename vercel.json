@@ -67,11 +67,6 @@
       "source": "/eventos",
       "destination": "/proyectos-digitales",
       "permanent": true
-    },
-    {
-      "source": "/equipamiento",
-      "destination": "/",
-      "permanent": true
     }
   ]
 }
