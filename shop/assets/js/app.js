@@ -1,4 +1,8 @@
-const BUILD_VERSION = "5.4.0-home-deeplinks";
+const BUILD_VERSION = "5.1.0-argentina-only";
+
+const SITE_REGION = "ar";
+const SITE_LOCALE = "es-AR";
+const SITE_CURRENCY = "ARS";
 
 
 const CATEGORY_ORDER = [
@@ -45,9 +49,9 @@ const els = {
   loadingProgress: document.querySelector("#loadingProgress")
 };
 
-const defaultMoney = new Intl.NumberFormat("es-AR", {
+const defaultMoney = new Intl.NumberFormat(SITE_LOCALE, {
   style: "currency",
-  currency: "ARS",
+  currency: SITE_CURRENCY,
   maximumFractionDigits: 0
 });
 
@@ -78,9 +82,18 @@ function extractUrl(line = "") {
 }
 
 async function getLinks() {
-  const response = await fetch(`/shop/productos.txt?v=${Date.now()}`, { cache: "no-store" });
-  if (!response.ok) throw new Error("No se pudo leer productos.txt");
-  const text = await response.text();
+  const files = ["productos-ar.txt", "productos.txt"];
+  let text = "";
+  for (const file of files) {
+    try {
+      const response = await fetch(`/shop/${file}?v=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) continue;
+      text = await response.text();
+      const hasLinks = /https?:\/\//i.test(text);
+      if (hasLinks) break;
+    } catch {}
+  }
+  if (!text) throw new Error("No se pudo leer el catálogo regional");
   const seen = new Set();
 
   return text
@@ -102,7 +115,7 @@ async function getLinks() {
 
 async function fetchProduct(linkData) {
   try {
-    const query = new URLSearchParams({ url: linkData.url });
+    const query = new URLSearchParams({ url: linkData.url, region: SITE_REGION });
     const response = await fetch(`/api/product?${query.toString()}`, { cache: "default" });
     if (!response.ok) throw new Error("Producto no disponible");
     const data = await response.json();
@@ -135,7 +148,7 @@ async function fetchProduct(linkData) {
       savings: null,
       hasDiscount: false,
       hasBonus: false,
-      currency: "ARS",
+      currency: SITE_CURRENCY,
       priceAutomatic: false,
       priceNotice: "Consultá el precio actualizado en Mercado Libre",
       affiliateUrl: linkData.url,
@@ -180,12 +193,12 @@ function hideCatalogLoading() {
   if (els.catalogLoading) els.catalogLoading.hidden = true;
 }
 
-function formatPrice(value, currency = "ARS") {
+function formatPrice(value, currency = SITE_CURRENCY) {
   if (!Number.isFinite(Number(value))) return "Ver precio actualizado";
   try {
-    return new Intl.NumberFormat("es-AR", {
+    return new Intl.NumberFormat(SITE_LOCALE, {
       style: "currency",
-      currency: currency || "ARS",
+      currency: currency || SITE_CURRENCY,
       maximumFractionDigits: 0
     }).format(Number(value));
   } catch {
@@ -212,7 +225,7 @@ function productPricingMarkup(product) {
           <span>Precio publicado</span>
           <b>${escapeHtml(formatPrice(product.price, product.currency))}</b>
         </div>
-        ${product.savings != null ? `<small class="price-saving">Ahorr&aacute;s ${escapeHtml(formatPrice(product.savings, product.currency))}</small>` : ""}
+        ${product.savings != null ? `<small class="price-saving">${SITE_REGION === "cl" ? "Ahorras" : "Ahorrás"} ${escapeHtml(formatPrice(product.savings, product.currency))}</small>` : ""}
       </div>`;
   }
 
@@ -227,7 +240,7 @@ function productPricingMarkup(product) {
           <strong>${escapeHtml(formatPrice(effective, product.currency))}</strong>
           <span class="discount-pill">${escapeHtml(product.promotionLabel || `${product.discountPercentage}% OFF`)}</span>
         </div>
-        ${product.savings != null ? `<small class="price-saving">Ahorr&aacute;s ${escapeHtml(formatPrice(product.savings, product.currency))}</small>` : ""}
+        ${product.savings != null ? `<small class="price-saving">${SITE_REGION === "cl" ? "Ahorras" : "Ahorrás"} ${escapeHtml(formatPrice(product.savings, product.currency))}</small>` : ""}
       </div>`;
   }
 
@@ -236,7 +249,7 @@ function productPricingMarkup(product) {
       <div class="product-price product-price-simple">
         <small>Precio publicado</small>
         <strong>${escapeHtml(formatPrice(product.price, product.currency))}</strong>
-        <small class="price-condition">${escapeHtml(product.priceNotice || "Verificá promociones y precio final en Mercado Libre.")}</small>
+        <small class="price-condition">${escapeHtml(product.priceNotice || (SITE_REGION === "cl" ? "Verifica promociones y precio final en Mercado Libre." : "Verificá promociones y precio final en Mercado Libre."))}</small>
       </div>`;
   }
 
@@ -368,7 +381,7 @@ function renderProducts() {
   const emptyHeading = els.emptyState.querySelector("h3");
   const emptyText = els.emptyState.querySelector("p");
   emptyHeading.textContent = "No encontramos coincidencias";
-  emptyText.textContent = "Probá con otra búsqueda o elegí la categoría “Todos”.";
+  emptyText.textContent = SITE_REGION === "cl" ? "Prueba con otra búsqueda o elige la categoría “Todos”." : "Probá con otra búsqueda o elegí la categoría “Todos”.";
   els.emptyState.hidden = list.length > 0 || state.products.length === 0;
   els.productGrid.hidden = list.length === 0;
 
@@ -447,9 +460,9 @@ async function init() {
       els.productGrid.innerHTML = "";
       els.productGrid.hidden = true;
       els.emptyState.hidden = false;
-      els.emptyState.querySelector("h3").textContent = "Próximamente habrá productos disponibles";
-      els.emptyState.querySelector("p").textContent = "Estamos preparando la selección para que puedas explorarla muy pronto.";
-      els.resultsCopy.textContent = "Todavía no hay productos publicados";
+      els.emptyState.querySelector("h3").textContent = SITE_REGION === "cl" ? "Estamos preparando la selección para Chile" : "Próximamente habrá productos disponibles";
+      els.emptyState.querySelector("p").textContent = SITE_REGION === "cl" ? "Muy pronto podrás explorar productos seleccionados para Chile." : "Estamos preparando la selección para que puedas explorarla muy pronto.";
+      els.resultsCopy.textContent = SITE_REGION === "cl" ? "Todavía no hay productos publicados para Chile" : "Todavía no hay productos publicados";
       updateCounters();
       renderHeroPreview();
       renderFeatured();

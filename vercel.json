@@ -35,15 +35,6 @@
       ]
     },
     {
-      "source": "/shop/productos.txt",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, max-age=0"
-        }
-      ]
-    },
-    {
       "source": "/shop/assets/js/(.*)",
       "headers": [
         {
@@ -60,6 +51,24 @@
           "value": "no-store, max-age=0"
         }
       ]
+    },
+    {
+      "source": "/shop/productos.txt",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/shop/productos-ar.txt",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -67,6 +76,16 @@
       "source": "/eventos",
       "destination": "/proyectos-digitales",
       "permanent": true
+    },
+    {
+      "source": "/ar",
+      "destination": "/?region=ar",
+      "permanent": false
+    },
+    {
+      "source": "/cl",
+      "destination": "/?region=cl",
+      "permanent": false
     }
   ]
 }

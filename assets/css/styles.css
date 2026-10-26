@@ -620,3 +620,12 @@ h3 { font-size: 1.28rem; line-height: 1.24; letter-spacing: -.02em; }
   .field-wide { grid-column:auto; }
   .contact-form { padding:20px; }
 }
+
+/* Regional selector */
+.area1-region-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;padding:3px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(5,24,48,.18);backdrop-filter:blur(10px);white-space:nowrap}
+.area1-region-label{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;opacity:.78;padding:0 6px}
+.area1-region-switcher button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;font-size:.7rem;font-weight:850;padding:5px 9px;border-radius:999px;cursor:pointer;transition:.2s ease}
+.area1-region-switcher button[aria-pressed="true"]{background:#fff;color:#0a5fa8;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.area1-region-switcher button:hover{background:rgba(255,255,255,.16)}
+.area1-region-switcher button[aria-pressed="true"]:hover{background:#fff}
+@media(max-width:760px){.topbar-row>span:nth-child(2){display:none!important}.area1-region-label{display:none}.area1-region-switcher{margin-left:auto}.area1-region-switcher button{padding:5px 7px;font-size:.66rem}}

@@ -6,7 +6,7 @@
   <title>Contacto | Área 1</title>
   <meta name="description" content="Contactá a Área 1 por formulario, WhatsApp o Instagram para consultas sobre Analítica & Procesos, Equipamiento, Shop o Proyectos Digitales.">
   <meta name="theme-color" content="#061225">
-  <link rel="stylesheet" href="assets/css/styles.css?v=4.5">
+  <link rel="stylesheet" href="assets/css/styles.css?v=5.0">
   <!-- Vercel Web Analytics: sitio HTML estatico -->
   <script defer src="/_vercel/insights/script.js"></script>
   <!-- Google Analytics 4 -->
@@ -18,11 +18,12 @@
     gtag('js', new Date());
     gtag('config', 'G-RB4RWLLV15');
   </script>
+  <script defer src="/assets/js/region.js?v=5.1"></script>
 </head>
 <body class="contact-page">
   <div class="topbar">
     <div class="container topbar-row">
-      <span>Área 1 · Contacto</span>
+      <span>Área 1 · Contacto · <strong data-region-name>Argentina</strong></span>
       <span>Analítica &amp; Procesos · Equipamiento · Shop · Proyectos Digitales</span>
     </div>
   </div>
@@ -79,6 +80,7 @@
         </div>
 
         <form class="contact-form reveal reveal-delay" id="contactForm" novalidate>
+          <input type="hidden" name="region" value="ar">
           <div class="form-grid">
             <label class="field field-wide">
               <span>Nombre o empresa <small>(opcional)</small></span>

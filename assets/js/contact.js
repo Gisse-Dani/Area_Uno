@@ -7,6 +7,9 @@
   const params = new URLSearchParams(window.location.search);
   const reasonFromUrl = params.get('motivo');
   const reasonSelect = form.elements.reason;
+  const regionParam = new URLSearchParams(window.location.search).get('region');
+  const storedRegion = localStorage.getItem('area1_region');
+  const region = window.Area1Region?.getRegion?.() || (regionParam === 'cl' || (!regionParam && storedRegion === 'cl') ? 'cl' : 'ar');
   if (reasonFromUrl && reasonSelect) {
     const option = [...reasonSelect.options].find(item => item.value.toLowerCase() === reasonFromUrl.toLowerCase());
     if (option) reasonSelect.value = option.value;
@@ -30,11 +33,11 @@
 
     ['email', 'emailConfirm', 'reason', 'message'].forEach(name => setError(name, ''));
 
-    if (!validEmail(email)) { setError('email', 'Ingresá un correo electrónico válido.'); ok = false; }
-    if (!validEmail(confirm)) { setError('emailConfirm', 'Confirmá un correo electrónico válido.'); ok = false; }
+    if (!validEmail(email)) { setError('email', region === 'cl' ? 'Ingresa un correo electrónico válido.' : 'Ingresá un correo electrónico válido.'); ok = false; }
+    if (!validEmail(confirm)) { setError('emailConfirm', region === 'cl' ? 'Confirma un correo electrónico válido.' : 'Confirmá un correo electrónico válido.'); ok = false; }
     else if (email.toLowerCase() !== confirm.toLowerCase()) { setError('emailConfirm', 'Los correos electrónicos no coinciden.'); ok = false; }
-    if (!reason) { setError('reason', 'Seleccioná el motivo de la consulta.'); ok = false; }
-    if (message.length < 10) { setError('message', 'Contanos un poco más para poder ayudarte.'); ok = false; }
+    if (!reason) { setError('reason', region === 'cl' ? 'Selecciona el motivo de la consulta.' : 'Seleccioná el motivo de la consulta.'); ok = false; }
+    if (message.length < 10) { setError('message', region === 'cl' ? 'Cuéntanos un poco más para poder ayudarte.' : 'Contanos un poco más para poder ayudarte.'); ok = false; }
 
     return ok;
   };
@@ -44,7 +47,7 @@
     status.textContent = '';
     status.className = 'form-status';
     if (!validate()) {
-      status.textContent = 'Revisá los campos marcados antes de enviar.';
+      status.textContent = region === 'cl' ? 'Revisa los campos marcados antes de enviar.' : 'Revisá los campos marcados antes de enviar.';
       status.classList.add('is-error');
       const firstInvalid = form.querySelector('[aria-invalid="true"]');
       firstInvalid?.focus();
@@ -57,7 +60,8 @@
       emailConfirm: form.elements.emailConfirm.value.trim(),
       reason: form.elements.reason.value.trim(),
       message: form.elements.message.value.trim(),
-      website: form.elements.website.value.trim()
+      website: form.elements.website.value.trim(),
+      region
     };
 
     submitButton.disabled = true;
@@ -80,7 +84,7 @@
         window.area1Track('contact_form_sent', { form_name: 'contacto_general' });
       }
     } catch (error) {
-      status.textContent = error.message || 'No pudimos enviar la consulta. Probá nuevamente o escribinos por WhatsApp.';
+      status.textContent = error.message || (region === 'cl' ? 'No pudimos enviar la consulta. Intenta nuevamente desde el formulario.' : 'No pudimos enviar la consulta. Probá nuevamente o escribinos por WhatsApp.');
       status.classList.add('is-error');
     } finally {
       submitButton.disabled = false;

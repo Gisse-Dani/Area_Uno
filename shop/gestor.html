@@ -22,11 +22,11 @@
       <section class="manager-card">
         <p class="kicker dark"><span></span> GESTOR SIMPLE</p>
         <h1>Solo pegá los links.</h1>
-        <p class="manager-lead">Pegá los enlaces de afiliado de Mercado Libre, uno debajo del otro. El gestor generará el archivo <strong>productos.txt</strong> listo para reemplazar en GitHub.</p>
+        <p class="manager-lead">Pegá los enlaces de afiliado de Mercado Libre Argentina, uno debajo del otro. El gestor generará el archivo del Shop listo para reemplazar en GitHub.</p>
 
         <div class="manager-steps">
           <div class="manager-step"><b>01</b><span>Pegá un enlace por línea.</span></div>
-          <div class="manager-step"><b>02</b><span>Descargá <code>productos.txt</code>.</span></div>
+          <div class="manager-step"><b>02</b><span>Descargá <code>productos-ar.txt</code>.</span></div>
           <div class="manager-step"><b>03</b><span>Reemplazalo en GitHub y confirmá el cambio.</span></div>
         </div>
 
@@ -35,7 +35,7 @@
         <p class="manager-count" id="linkCount">0 enlaces válidos</p>
 
         <div class="manager-actions">
-          <button class="button button-primary" id="downloadButton" type="button">Descargar productos.txt <span>↓</span></button>
+          <button class="button button-primary" id="downloadButton" type="button">Descargar productos-ar.txt <span>↓</span></button>
           <button class="button button-dark" id="cleanButton" type="button">Limpiar duplicados</button>
         </div>
 
@@ -77,7 +77,7 @@
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'productos.txt';
+      anchor.download = 'productos-ar.txt';
       anchor.click();
       URL.revokeObjectURL(url);
     });

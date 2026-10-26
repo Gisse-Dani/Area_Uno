@@ -54,3 +54,21 @@ La dirección de correo no se renderiza ni se incluye en el HTML público.
 ## Shop: categorías automáticas
 
 Los productos se categorizan automáticamente a partir del título, marca y categoría oficial de Mercado Libre. La carga sigue siendo un enlace por línea en `shop/productos.txt`.
+
+## Multirregión Argentina / Chile
+
+La región se selecciona desde la barra superior. También puede abrirse directamente con:
+- `/?region=ar`
+- `/?region=cl`
+
+El Shop está disponible exclusivamente para Argentina y utiliza `shop/productos-ar.txt`. Si un visitante con región Chile intenta ingresar a `/shop/`, vuelve a la home regional de Chile.
+
+Los contactos públicos pueden configurarse por región desde variables de entorno de Vercel, sin tener que editar HTML. Si se conecta un dominio `.cl` al mismo proyecto, la interfaz selecciona Chile automáticamente. No hace falta duplicar el sitio.
+
+## Disponibilidad regional v5.1
+
+- Argentina: Analítica & Procesos, Equipamiento, Shop y Proyectos Digitales.
+- Chile: Analítica & Procesos, Equipamiento y Proyectos Digitales.
+- Shop está disponible únicamente en Argentina.
+- WhatsApp Chile para todas las verticales: +56 9 2218 4205.
+

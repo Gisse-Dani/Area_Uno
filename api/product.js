@@ -3,6 +3,10 @@ const ALLOWED_HOSTS = [
   "www.mercadolibre.com.ar",
   "articulo.mercadolibre.com.ar",
   "listado.mercadolibre.com.ar",
+  "mercadolibre.cl",
+  "www.mercadolibre.cl",
+  "articulo.mercadolibre.cl",
+  "listado.mercadolibre.cl",
   "mercadolibre.com",
   "www.mercadolibre.com",
   "meli.la",
@@ -310,9 +314,9 @@ function validPercentage(value) {
 function findItemId(value = "") {
   const normalized = decodeEntities(String(value)).replace(/%2D/gi, "-");
   const patterns = [
-    /\b(MLA)[-_]?(\d{7,})\b/i,
-    /[?&](?:item_id|itemId|id)=(MLA)[-_]?(\d{7,})\b/i,
-    /\/(MLA)[-_]?(\d{7,})[-_/]/i
+    /\b(ML[AC])[-_]?(\d{7,})\b/i,
+    /[?&](?:item_id|itemId|id)=(ML[AC])[-_]?(\d{7,})\b/i,
+    /\/(ML[AC])[-_]?(\d{7,})[-_/]/i
   ];
   for (const pattern of patterns) {
     const match = normalized.match(pattern);
@@ -813,7 +817,7 @@ function choosePricing(candidates, promotionInfo) {
     promotionSource: promotionInfo?.source || ""
   };
 }
-function extractCurrency({ html, item, structuredProduct, jsonValues }) {
+function extractCurrency({ html, item, structuredProduct, jsonValues, defaultCurrency = "ARS" }) {
   const offer = offerFromProduct(structuredProduct);
   const direct = item?.sale_price?.currency_id || item?.currency_id || offer?.priceCurrency ||
     metaContent(html, "product:price:currency") || metaContent(html, "og:price:currency");
@@ -828,7 +832,7 @@ function extractCurrency({ html, item, structuredProduct, jsonValues }) {
     });
     if (found) break;
   }
-  return found || "ARS";
+  return found || defaultCurrency;
 }
 
 function extractImage({ html, item, structuredProduct, jsonValues }) {
@@ -864,13 +868,13 @@ function extractTitle({ html, item, structuredProduct, jsonValues }) {
   return title || "Producto recomendado en Mercado Libre";
 }
 
-async function fetchText(url) {
+async function fetchText(url, region = "ar") {
   const response = await fetch(url, {
     redirect: "follow",
     headers: {
       "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
       "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-      "accept-language": "es-AR,es;q=0.9,en;q=0.6",
+      "accept-language": region === "cl" ? "es-CL,es;q=0.9,en;q=0.6" : "es-AR,es;q=0.9,en;q=0.6",
       "cache-control": "no-cache"
     }
   });
@@ -893,6 +897,8 @@ module.exports = async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido" });
 
   const rawUrl = typeof req.query.url === "string" ? req.query.url.trim() : "";
+  const region = String(req.query.region || "ar").toLowerCase() === "cl" ? "cl" : "ar";
+  const defaultCurrency = region === "cl" ? "CLP" : "ARS";
   if (!allowedUrl(rawUrl)) return res.status(400).json({ error: "Enlace de Mercado Libre inválido" });
 
   res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=900");
@@ -900,7 +906,7 @@ module.exports = async function handler(req, res) {
   let page = { html: "", finalUrl: rawUrl };
   let pageError = "";
   try {
-    page = await fetchText(rawUrl);
+    page = await fetchText(rawUrl, region);
   } catch (error) {
     pageError = error.message || "No se pudo leer el enlace";
   }
@@ -949,7 +955,7 @@ module.exports = async function handler(req, res) {
   const pricing = choosePricing(priceCandidates, promotionInfo);
   const title = item?.title || preliminaryTitle || "Producto recomendado en Mercado Libre";
   const image = extractImage({ html: productScope.html, item, structuredProduct: productScope.scoped ? null : structuredProduct, jsonValues: scopedJsonValues }) || preliminaryImage;
-  const currency = extractCurrency({ html: productScope.html, item, structuredProduct: productScope.scoped ? null : structuredProduct, jsonValues: scopedJsonValues });
+  const currency = extractCurrency({ html: productScope.html, item, structuredProduct: productScope.scoped ? null : structuredProduct, jsonValues: scopedJsonValues, defaultCurrency });
   const brand = attributeValue(item?.attributes, "BRAND") ||
     (typeof structuredProduct?.brand === "string" ? structuredProduct.brand : structuredProduct?.brand?.name) || "";
   const classification = classifyProduct({ title, brand, marketplaceCategory, marketplaceCategoryPath });

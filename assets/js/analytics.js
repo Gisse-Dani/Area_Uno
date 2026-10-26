@@ -4,7 +4,8 @@
     window.gtag('event', eventName, {
       ...params,
       page_path: window.location.pathname,
-      page_title: document.title
+      page_title: document.title,
+      site_region: window.Area1Region?.regionName || (window.Area1Region?.getRegion?.() === 'cl' ? 'Chile' : 'Argentina')
     });
   };
 
