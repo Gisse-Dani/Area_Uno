@@ -868,6 +868,8 @@ button { cursor: pointer; }
 /* Regional selector */
 .area1-region-switcher{display:flex;align-items:center;gap:3px;margin-left:auto;padding:3px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.06);white-space:nowrap}
 .area1-region-label{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);padding:0 5px}
-.area1-region-switcher button{border:0;background:transparent;color:rgba(255,255,255,.78);font:inherit;font-size:.68rem;font-weight:800;padding:5px 8px;border-radius:999px;cursor:pointer}
+.area1-region-switcher button{border:0;background:transparent;color:rgba(255,255,255,.78);font:inherit;font-size:.68rem;font-weight:800;padding:5px 8px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.area1-region-flag{font-size:.98rem;line-height:1}
+.area1-region-country{line-height:1}
 .area1-region-switcher button[aria-pressed="true"]{background:#fff;color:#0a5fa8}
-@media(max-width:760px){.area1-region-label{display:none}.area1-region-switcher{margin-left:auto}.area1-region-switcher button{font-size:.64rem;padding:5px 7px}}
+@media(max-width:760px){.area1-region-label{display:none}.area1-region-switcher{margin-left:auto}.area1-region-switcher button{font-size:.64rem;padding:5px 7px;gap:4px}.area1-region-flag{font-size:.92rem}}

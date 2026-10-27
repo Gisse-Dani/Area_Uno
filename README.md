@@ -72,3 +72,17 @@ Los contactos públicos pueden configurarse por región desde variables de entor
 - Shop está disponible únicamente en Argentina.
 - WhatsApp Chile para todas las verticales: +56 9 2218 4205.
 
+
+
+## Contacto regional
+
+- Argentina: conserva la configuración existente mediante `CONTACT_RECIPIENT` / `CONTACT_RECIPIENT_AR`.
+- Chile: las consultas se entregan internamente a `areaunocl@gmail.com` por defecto. Puede sobreescribirse con `CONTACT_RECIPIENT_CL`.
+- Ninguna dirección de correo se muestra en la interfaz pública.
+
+
+## Regionalización v5.2
+- Argentina: @areauno.servicios.
+- Chile: @areaunocl.
+- Selector visual con banderas y persistencia de región.
+- Textos visibles adaptados a es-AR / es-CL.

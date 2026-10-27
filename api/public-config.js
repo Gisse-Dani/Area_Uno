@@ -10,8 +10,8 @@ module.exports = function handler(req, res) {
     ? {
         general: '5492984713844',
         generalDisplay: '+54 9 2984 713844',
-        equipment: '5492984283869',
-        equipmentDisplay: '+54 9 2984 28-3869',
+        equipment: '5492984713844',
+        equipmentDisplay: '+54 9 2984 713844',
         analytics: '5492984713844',
         analyticsDisplay: '+54 9 2984 713844',
         shop: '5492984713844',
@@ -31,12 +31,12 @@ module.exports = function handler(req, res) {
         shopDisplay: '',
         projects: '56922184205',
         projectsDisplay: '+56 9 2218 4205',
-        instagram: 'areauno.servicios'
+        instagram: 'areaunocl'
       };
 
   const suffix = region.toUpperCase();
   const generalRaw = process.env[`WHATSAPP_GENERAL_${suffix}`] || defaults.general;
-  const equipmentRaw = process.env[`WHATSAPP_EQUIPMENT_${suffix}`] || defaults.equipment;
+  const equipmentRaw = region === 'ar' ? generalRaw : (process.env[`WHATSAPP_EQUIPMENT_${suffix}`] || defaults.equipment);
   const analyticsRaw = process.env[`WHATSAPP_ANALYTICS_${suffix}`] || defaults.analytics || generalRaw;
   const shopRaw = region === 'cl' ? '' : (process.env[`WHATSAPP_SHOP_${suffix}`] || defaults.shop || generalRaw);
   const projectsRaw = process.env[`WHATSAPP_PROJECTS_${suffix}`] || defaults.projects || generalRaw;
@@ -51,7 +51,7 @@ module.exports = function handler(req, res) {
       general: digits(generalRaw),
       generalDisplay: process.env[`WHATSAPP_GENERAL_DISPLAY_${suffix}`] || defaults.generalDisplay || generalRaw,
       equipment: digits(equipmentRaw),
-      equipmentDisplay: process.env[`WHATSAPP_EQUIPMENT_DISPLAY_${suffix}`] || defaults.equipmentDisplay || equipmentRaw,
+      equipmentDisplay: region === 'ar' ? (process.env[`WHATSAPP_GENERAL_DISPLAY_${suffix}`] || defaults.generalDisplay || generalRaw) : (process.env[`WHATSAPP_EQUIPMENT_DISPLAY_${suffix}`] || defaults.equipmentDisplay || equipmentRaw),
       analytics: digits(analyticsRaw),
       analyticsDisplay: process.env[`WHATSAPP_ANALYTICS_DISPLAY_${suffix}`] || defaults.analyticsDisplay || analyticsRaw,
       shop: digits(shopRaw),

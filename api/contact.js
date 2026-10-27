@@ -61,9 +61,11 @@ module.exports = async function handler(req, res) {
     : 'GENERAL';
   const gmailUser = process.env[`GMAIL_USER_${suffix}`] || process.env.GMAIL_USER;
   const gmailAppPassword = process.env[`GMAIL_APP_PASSWORD_${suffix}`] || process.env.GMAIL_APP_PASSWORD;
+  const defaultRecipient = region === 'cl' ? 'areaunocl@gmail.com' : '';
   const recipient = process.env[`CONTACT_RECIPIENT_${vertical}_${suffix}`]
     || process.env[`CONTACT_RECIPIENT_${suffix}`]
-    || process.env.CONTACT_RECIPIENT
+    || (region === 'ar' ? process.env.CONTACT_RECIPIENT : '')
+    || defaultRecipient
     || gmailUser;
 
   if (!gmailUser || !gmailAppPassword || !recipient) {

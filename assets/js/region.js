@@ -36,7 +36,7 @@
     region: 'ar', regionName: 'Argentina', locale: 'es-AR', currency: 'ARS',
     whatsapp: {
       general: '5492984713844', generalDisplay: '+54 9 2984 713844',
-      equipment: '5492984283869', equipmentDisplay: '+54 9 2984 28-3869',
+      equipment: '5492984713844', equipmentDisplay: '+54 9 2984 713844',
       analytics: '5492984713844', analyticsDisplay: '+54 9 2984 713844',
       shop: '5492984713844', shopDisplay: '+54 9 2984 713844',
       projects: '5492984713844', projectsDisplay: '+54 9 2984 713844'
@@ -53,7 +53,7 @@
       shop: '', shopDisplay: '',
       projects: '56922184205', projectsDisplay: '+56 9 2218 4205'
     },
-    instagram: 'areauno.servicios'
+    instagram: 'areaunocl'
   };
 
   let publicConfig = region === 'ar' ? arDefaults : clDefaults;
@@ -149,8 +149,8 @@
     wrapper.setAttribute('aria-label', 'Seleccionar región');
     wrapper.innerHTML = `
       <span class="area1-region-label">Región</span>
-      <button type="button" data-region="ar" aria-pressed="${region === 'ar'}">Argentina</button>
-      <button type="button" data-region="cl" aria-pressed="${region === 'cl'}">Chile</button>`;
+      <button type="button" data-region="ar" aria-pressed="${region === 'ar'}" aria-label="Ver Área 1 Argentina" title="Argentina"><span class="area1-region-flag" aria-hidden="true">🇦🇷</span><span class="area1-region-country">Argentina</span></button>
+      <button type="button" data-region="cl" aria-pressed="${region === 'cl'}" aria-label="Ver Área 1 Chile" title="Chile"><span class="area1-region-flag" aria-hidden="true">🇨🇱</span><span class="area1-region-country">Chile</span></button>`;
     host.appendChild(wrapper);
 
     wrapper.querySelectorAll('button[data-region]').forEach(button => {
@@ -170,6 +170,23 @@
     });
   }
 
+  function replaceTextNodes(replacements) {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!parent || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      let value = node.nodeValue;
+      replacements.forEach(([from, to]) => { value = value.split(from).join(to); });
+      if (value !== node.nodeValue) node.nodeValue = value;
+    });
+  }
+
   function localizeCopy() {
     // Images can be regionalized without duplicating pages when assets are provided later.
     document.querySelectorAll('img[data-src-ar][data-src-cl]').forEach(img => {
@@ -177,37 +194,70 @@
       if (regionalSrc) img.src = regionalSrc;
     });
 
-    // Visible regional cue.
     document.querySelectorAll('[data-region-name]').forEach(node => { node.textContent = regionName; });
 
     if (region === 'cl') {
-      // Chilean Spanish: avoid Argentine voseo in the most visible customer-facing copy.
+      // Chile: tuteo, terminología comercial local y términos de procesos habituales.
       const replacements = [
+        ['Elegí el área que mejor responde a tu necesidad.', 'Elige el área que mejor responde a tu necesidad.'],
+        ['Encontrá lo que necesitás', 'Encuentra lo que necesitas'],
+        ['Contanos qué necesitás analizar, ordenar o mejorar', 'Cuéntanos qué necesitas analizar, ordenar o mejorar'],
+        ['Tu proyecto puede empezar acá', 'Tu proyecto puede empezar aquí'],
+        ['Contanos la idea', 'Cuéntanos la idea'],
+        ['Podés iniciar la consulta', 'Puedes iniciar la consulta'],
+        ['Contanos qué necesitás.', 'Cuéntanos qué necesitas.'],
         ['Podés enviarnos una consulta desde el formulario o escribirnos directamente por WhatsApp. Para novedades, proyectos y contenidos, también podés encontrarnos en Instagram.', 'Puedes enviarnos una consulta desde el formulario o escribirnos directamente por WhatsApp. Para novedades, proyectos y contenidos, también puedes encontrarnos en Instagram.'],
-        ['Completá tus datos y elegí el motivo de la consulta. Tu correo se utiliza únicamente para poder responderte.', 'Completa tus datos y elige el motivo de la consulta. Tu correo se utiliza únicamente para poder responderte.'],
+        ['Escribinos desde acá.', 'Escríbenos desde aquí.'],
+        ['Completá tus datos y elegí el motivo de la consulta.', 'Completa tus datos y elige el motivo de la consulta.'],
+        ['Seleccioná una opción', 'Selecciona una opción'],
+        ['Al enviar, aceptás que usemos los datos ingresados únicamente para responder esta consulta.', 'Al enviar, aceptas que usemos los datos ingresados únicamente para responder esta consulta.'],
+        ['¿Preferís conversar?', '¿Prefieres conversar?'],
+        ['Volvé al ecosistema Área 1', 'Vuelve al ecosistema Área 1'],
+        ['El contenido que buscás', 'El contenido que buscas'],
+        ['Casamientos · Ceremonias', 'Matrimonios · Ceremonias'],
+        ['relevamiento y mejora de procesos', 'levantamiento y mejora de procesos'],
+        ['Relevamiento del flujo real', 'Levantamiento del flujo real'],
+        ['Relevar', 'Levantar'],
+        ['identificar y presupuestar infraestructura', 'identificar y cotizar infraestructura'],
+        ['soluciones presupuestables', 'soluciones cotizables'],
+        ['alternativas presupuestables', 'alternativas cotizables'],
+        ['Familias y modelos para presupuestar según el proyecto.', 'Familias y modelos para cotizar según el proyecto.'],
+        ['Para presupuestar mejor', 'Para cotizar mejor'],
+        ['al momento de presupuestar.', 'al momento de cotizar.'],
+        ['indicá categoría, cantidad, uso, capacidad requerida, ubicación del proyecto y fecha estimada de necesidad.', 'indica categoría, cantidad, uso, capacidad requerida, ubicación del proyecto y fecha estimada de necesidad.'],
         ['Productos recomendados para vos.', 'Productos recomendados para ti.'],
         ['Aguardá un momento. Estamos buscando productos para vos.', 'Espera un momento. Estamos buscando productos para ti.'],
         ['Probá con otra búsqueda o elegí la categoría “Todos”.', 'Prueba con otra búsqueda o elige la categoría “Todos”.'],
-        ['Casamientos · Ceremonias', 'Matrimonios · Ceremonias'],
-        ['Escribinos desde acá.', 'Escríbenos desde aquí.'],
-        ['¿Preferís conversar?', '¿Prefieres conversar?'],
-        ['Ingresás a la publicación original y completás pago, envío y condiciones dentro de Mercado Libre.', 'Ingresas a la publicación original y completas pago, envío y condiciones dentro de Mercado Libre.']
+        ['Ingresás a la publicación original y completás pago, envío y condiciones dentro de Mercado Libre.', 'Ingresas a la publicación original y completas pago, envío y condiciones dentro de Mercado Libre.'],
+        ['Si realizás una compra desde ellos', 'Si realizas una compra desde ellos'],
+        ['sin costo adicional para vos', 'sin costo adicional para ti'],
+        ['Explorá una vidriera', 'Explora una vitrina'],
+        ['Buscá por producto, marca o categoría.', 'Busca por producto, marca o categoría.']
       ];
-      document.querySelectorAll('p, h1, h2, h3, span, strong, small, option').forEach(node => {
-        const ownText = [...node.childNodes].filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.nodeValue).join('').trim();
-        if (!ownText) return;
-        const replacement = replacements.find(([from]) => ownText === from);
-        if (replacement) node.textContent = replacement[1];
-      });
+      replaceTextNodes(replacements);
+
       document.querySelectorAll('img[alt*="casamiento" i]').forEach(img => {
         img.alt = img.alt.replace(/casamiento/gi, 'matrimonio');
       });
       document.querySelectorAll('input[placeholder="¿Cómo querés que te llamemos?"]').forEach(input => { input.placeholder = '¿Cómo quieres que te llamemos?'; });
       document.querySelectorAll('input[placeholder="Repetí tu correo"]').forEach(input => { input.placeholder = 'Repite tu correo'; });
       document.querySelectorAll('textarea[placeholder^="Contanos brevemente"]').forEach(input => { input.placeholder = 'Cuéntanos brevemente qué necesitas, cantidades, alcance o cualquier dato que nos ayude a responderte mejor.'; });
+
+      // También regionalizamos metadatos visibles para buscadores/social cuando Chile es la región activa.
+      if (document.title) {
+        document.title = document.title
+          .replace(/presupuestables/gi, 'cotizables')
+          .replace(/casamientos/gi, 'matrimonios');
+      }
+      const description = document.querySelector('meta[name="description"]');
+      if (description) {
+        description.content = description.content
+          .replace(/presupuestables/gi, 'cotizables')
+          .replace(/casamientos/gi, 'matrimonios')
+          .replace(/relevamiento/gi, 'levantamiento');
+      }
     }
 
-    // Marketplace cue in the Shop/home without changing legal brand mentions.
     const marketplaceLabel = region === 'cl' ? 'Mercado Libre Chile' : 'Mercado Libre Argentina';
     document.querySelectorAll('[data-marketplace-label]').forEach(node => { node.textContent = marketplaceLabel; });
   }
@@ -289,6 +339,7 @@
     createSwitcher();
     localizeCopy();
     updateInternalLinks();
+    applyContactConfig(publicConfig);
     window.Area1Region.ready = loadPublicConfig().then(config => {
       if (typeof window.gtag === 'function') {
         window.gtag('set', 'user_properties', { site_region: regionName });
