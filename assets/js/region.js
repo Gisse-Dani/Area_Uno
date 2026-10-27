@@ -1,17 +1,52 @@
-(() => {
-  const REGION_KEY = 'area1_region';
+(async () => {
+  const MANUAL_REGION_KEY = 'area1_region_manual';
+  const SESSION_REGION_KEY = 'area1_region_auto';
+  const LEGACY_REGION_KEY = 'area1_region';
+  const supportedRegions = ['ar', 'cl'];
   const params = new URLSearchParams(window.location.search);
   const requested = (params.get('region') || '').toLowerCase();
-  const stored = (localStorage.getItem(REGION_KEY) || '').toLowerCase();
+  const manual = (localStorage.getItem(MANUAL_REGION_KEY) || '').toLowerCase();
+  const sessionRegion = (sessionStorage.getItem(SESSION_REGION_KEY) || '').toLowerCase();
   const host = (window.location.hostname || '').toLowerCase();
   const domainRegion = host.endsWith('.cl') ? 'cl' : (host.endsWith('.com.ar') ? 'ar' : '');
+
+  // v5.3: the old key mixed automatic and manual selections. Remove it once so
+  // geolocation can work correctly for visitors who used previous versions.
+  if (localStorage.getItem(LEGACY_REGION_KEY) !== null) localStorage.removeItem(LEGACY_REGION_KEY);
+
+  async function detectRegionByIp() {
+    try {
+      const response = await fetch('/api/region', { cache: 'no-store' });
+      if (!response.ok) throw new Error('region detection unavailable');
+      const data = await response.json();
+      return supportedRegions.includes(String(data.region || '').toLowerCase())
+        ? String(data.region).toLowerCase()
+        : '';
+    } catch {
+      return '';
+    }
+  }
+
+  let detectedRegion = '';
+  const hasRequested = supportedRegions.includes(requested);
+  const hasManual = supportedRegions.includes(manual);
+  const hasSession = supportedRegions.includes(sessionRegion);
+
+  if (!hasRequested && !hasManual && !domainRegion && !hasSession) {
+    detectedRegion = await detectRegionByIp();
+  }
+
   const browserRegion = /^es-cl\b/i.test(navigator.language || '') ? 'cl' : 'ar';
-  const region = ['ar', 'cl'].includes(requested) ? requested : (domainRegion || (['ar', 'cl'].includes(stored) ? stored : browserRegion));
+  const region = hasRequested
+    ? requested
+    : (hasManual
+      ? manual
+      : (domainRegion || (hasSession ? sessionRegion : (detectedRegion || browserRegion))));
   const regionName = region === 'cl' ? 'Chile' : 'Argentina';
   const locale = region === 'cl' ? 'es-CL' : 'es-AR';
   const currency = region === 'cl' ? 'CLP' : 'ARS';
 
-  localStorage.setItem(REGION_KEY, region);
+  if (!hasManual) sessionStorage.setItem(SESSION_REGION_KEY, region);
   document.documentElement.lang = locale;
   document.documentElement.dataset.region = region;
 
@@ -157,7 +192,8 @@
       button.addEventListener('click', () => {
         const nextRegion = button.dataset.region;
         if (nextRegion === region) return;
-        localStorage.setItem(REGION_KEY, nextRegion);
+        localStorage.setItem(MANUAL_REGION_KEY, nextRegion);
+        sessionStorage.setItem(SESSION_REGION_KEY, nextRegion);
         const nextUrl = (pageVertical === 'shop' && nextRegion === 'cl')
           ? new URL('/?region=cl', window.location.origin)
           : new URL(window.location.href);

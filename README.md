@@ -86,3 +86,8 @@ Los contactos públicos pueden configurarse por región desde variables de entor
 - Chile: @areaunocl.
 - Selector visual con banderas y persistencia de región.
 - Textos visibles adaptados a es-AR / es-CL.
+
+
+## Detección automática de región (v5.3)
+
+El sitio consulta `/api/region` en una primera visita sin preferencia previa. En Vercel, el endpoint lee `x-vercel-ip-country` y propone `ar` para Argentina o `cl` para Chile. No usa GPS. El visitante puede cambiar la región en cualquier momento con el selector de banderas; la elección manual queda guardada en el navegador y tiene prioridad sobre la detección automática.
